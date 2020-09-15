@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 class CreateBugForm extends React.Component {
   constructor(props){
@@ -55,6 +56,12 @@ class CreateBugForm extends React.Component {
   submitHandler = (e) => {
     e.preventDefault();
     console.log(this.state);
+    const bug = this.state;
+    axios.post('http://localhost:5000/api/bug', { bug })
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
   }
   /*
   Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)
