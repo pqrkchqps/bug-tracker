@@ -1,0 +1,28 @@
+{
+  "name": "bug-tracker",
+  "version": "0.0.1",
+  "description": "A simple bug tracker with users and admins",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pqrkchqps/bug-tracker.git"
+  },
+  "keywords": [
+    "bug",
+    "tracker",
+    "admin",
+    "controls"
+  ],
+  "author": "Aaron Sawyer, John Creps",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pqrkchqps/bug-tracker/issues"
+  },
+  "homepage": "https://github.com/pqrkchqps/bug-tracker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
