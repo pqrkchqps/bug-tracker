@@ -1,0 +1,1 @@
+create_bug_table = `CREATE TABLE IF NOT EXISTS bugs  (id SERIAL PRIMARY KEY,  assignedTo VARCHAR(100),  bugName VARCHAR(100),  createdBy VARCHAR(100),  deadline VARCHAR(100),  hoursWorked VARCHAR(100),  percentComplete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  timeEstimate VARCHAR(100),  version VARCHAR(100),  created_on DATE NOT NULL);`

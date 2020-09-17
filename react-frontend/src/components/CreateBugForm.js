@@ -57,7 +57,7 @@ class CreateBugForm extends React.Component {
     e.preventDefault();
     console.log(this.state);
     const bug = this.state;
-    axios.post('http://localhost:5000/api/bug', { bug })
+    axios.post('http://localhost:5000/api/bug', bug)
     .then(res => {
       console.log(res);
       console.log(res.data);

@@ -4,6 +4,7 @@
   "description": "A simple bug tracker with users and admins",
   "main": "server/server.js",
   "scripts": {
+    "create-dev-tables": "babel-node ./server/db/dbConnection createAllTables",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,9 @@
   },
   "homepage": "https://github.com/pqrkchqps/bug-tracker#readme",
   "dependencies": {
-    "express": "^4.17.1"
-  }
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg-promise": "^10.6.1"
+  },
+  "devDependencies": {}
 }
