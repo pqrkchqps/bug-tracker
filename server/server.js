@@ -6,8 +6,8 @@ const jsonParser = bodyParser.json();
 const config = require('dotenv').config()
 
 const pgp = require('pg-promise')();
-console.log(process.env.DATABASE_URL);
 var db = pgp(process.env.DATABASE_URL);
+db.none('CREATE TABLE IF NOT EXISTS bugs  (id SERIAL PRIMARY KEY,  assigned_to VARCHAR(100), bug_name VARCHAR(100) UNIQUE,  created_by VARCHAR(100),  deadline VARCHAR(100),  hours_worked VARCHAR(100),  percent_complete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  time_estimate VARCHAR(100),  version VARCHAR(100),  created_on DATE NOT NULL);');
 
 const port = process.env.PORT || 5000;
 
@@ -17,7 +17,7 @@ app.use(express.static(publicPath));
 
 app.post('/api/bug', jsonParser, (req, res) => {
   console.log(req.body)
-  const bug = req.body.bug;
+  const bug = req.body;
   const values = [
     bug.assignedTo,
     bug.bugName,
