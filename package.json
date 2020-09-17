@@ -4,8 +4,9 @@
   "description": "A simple bug tracker with users and admins",
   "main": "server/server.js",
   "scripts": {
-    "create-dev-tables": "babel-node ./server/db/dbConnection createAllTables",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd react-frontend; npm run build",
+    "start": "node ./server/server.js"
   },
   "repository": {
     "type": "git",
