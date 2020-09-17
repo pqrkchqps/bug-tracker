@@ -32,8 +32,10 @@ app.post('/api/bug', jsonParser, (req, res) => {
     bug.version
   ];
   db.none(
-    //'INSERT INTO bugs(assignedto, bugname, createdby, deadline, hoursworked, percentcomplete, severity, status, summary, timeestimate, version, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp)',
-    'INSERT INTO bugs(assignedto, bugname, createdby, deadline, hoursworked, percentcomplete, severity, status, summary, timeestimate, version, created_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp)',
+    'INSERT INTO bugs (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
+    +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
+    +'ON CONFLICT (bug_name) DO UPDATE '
+    +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11;',
     values
   ).then( t => {
     res.send(`Your Post request was recieved. Here is what you sent: ${req.body}`);
