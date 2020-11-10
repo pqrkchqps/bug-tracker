@@ -15,6 +15,13 @@ const publicPath = path.join(__dirname, '../react-frontend', 'build');
 
 app.use(express.static(publicPath));
 
+app.get('/api/bugs', (req, res) => {
+  db.any('SELECT * from bugs')
+  .then(bugs => {
+    res.json(bugs);
+  })
+})
+
 app.post('/api/bug', jsonParser, (req, res) => {
   console.log(req.body)
   const bug = req.body;
@@ -38,7 +45,7 @@ app.post('/api/bug', jsonParser, (req, res) => {
     +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11;',
     values
   ).then( t => {
-    res.send(`Your Post request was recieved. Here is what you sent: ${req.body}`);
+    res.send(`Your Post request was received. Here is what you sent: `+req.body);
   })
   .catch(error => {
     console.log(error);
