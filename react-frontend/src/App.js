@@ -4,13 +4,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/styles.scss'
 import CreateBugForm from './components/CreateBugForm'
 import BugsList from './components/BugsList'
+import store from './store'
+import {Provider} from 'react-redux'
 
 function App() {
   return (
-    <div className="App">
-      <BugsList />
-      <CreateBugForm />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <BugsList />
+        <CreateBugForm />
+      </div>
+    </Provider>
   );
 }
 

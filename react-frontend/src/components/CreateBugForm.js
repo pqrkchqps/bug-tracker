@@ -1,5 +1,6 @@
 import React from 'react'
-import axios from 'axios';
+import {connect} from 'react-redux'
+import {addBug} from '../actions/bugActions'
 
 class CreateBugForm extends React.Component {
   constructor(props){
@@ -55,13 +56,8 @@ class CreateBugForm extends React.Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    console.log(this.state);
     const bug = this.state;
-    axios.post('/api/bug', bug)
-    .then(res => {
-      console.log(res);
-      console.log(res.data);
-    })
+    this.props.addBug(bug);
   }
   /*
   Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)
@@ -131,4 +127,8 @@ class CreateBugForm extends React.Component {
   }
 }
 
-export default CreateBugForm;
+const mapStateToProps = state => ({
+  bug: state.bug
+})
+
+export default connect(mapStateToProps, {addBug})(CreateBugForm);

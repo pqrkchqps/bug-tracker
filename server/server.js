@@ -18,12 +18,12 @@ app.use(express.static(publicPath));
 app.get('/api/bugs', (req, res) => {
   db.any('SELECT * from bugs')
   .then(bugs => {
+    console.log(bugs)
     res.json(bugs);
   })
 })
 
-app.post('/api/bug', jsonParser, (req, res) => {
-  console.log(req.body)
+app.post('/api/bugs', jsonParser, (req, res) => {
   const bug = req.body;
   const values = [
     bug.assignedTo,
@@ -38,19 +38,26 @@ app.post('/api/bug', jsonParser, (req, res) => {
     bug.timeEstimate,
     bug.version
   ];
-  db.none(
+  db.one(
     'INSERT INTO bugs (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
     +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
     +'ON CONFLICT (bug_name) DO UPDATE '
-    +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11;',
+    +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;',
     values
-  ).then( t => {
-    res.send(`Your Post request was received. Here is what you sent: `+req.body);
+  ).then( newBug => {
+    res.json(newBug);
   })
   .catch(error => {
     console.log(error);
   })
 });
+
+app.delete('/api/bugs/:id', (req, res) => {
+  db.none('DELETE from bugs WHERE id = '+req.params.id)
+  .then(t =>{
+    res.send(`Deleted bug with id=${req.params.id}`);
+  }).catch(error => res.status(404).send('bug id not found'))
+})
 
 app.listen(port, () => {
   console.log('server running');

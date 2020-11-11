@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import { Container, ListGroup, ListGroupItem } from 'reactstrap';
+import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import axios from 'axios'
+import {connect} from 'react-redux'
+import {getBugs, deleteBug} from '../actions/bugActions'
+import PropTypes from 'prop-types'
 
 class BugsList extends Component {
   constructor(props){
@@ -12,23 +14,29 @@ class BugsList extends Component {
   }
 
   componentDidMount(){
-    axios.get('/api/bugs')
-    .then(res => {
-      console.log(res.data);
-      this.setState({bugs: res.data})
-    })
+    this.props.getBugs();
+  }
+
+  onDeleteClick = (id) => {
+    this.props.deleteBug(id);
   }
 
   render() {
-    const { bugs } = this.state;
+    const {bugs} = this.props.bug
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="shopping-list">
-            {bugs.map((bug) => (
-              <CSSTransition key={bug.id} timeout={500} classNames="fade">
+            {bugs.map(({bug_name, id}) => (
+              <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
-                  {bug.bug_name}
+                  <Button
+                    className="remove-btn"
+                    color="danger"
+                    size="sm"
+                    onClick={this.onDeleteClick.bind(this,id)}
+                  >&times;</Button>
+                  {bug_name}
                 </ListGroupItem>
               </CSSTransition>
             ))}
@@ -39,4 +47,13 @@ class BugsList extends Component {
   }
 }
 
-export default BugsList
+BugsList.propTypes = {
+  getBugs: PropTypes.func.isRequired,
+  bug: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  bug: state.bug
+})
+
+export default connect(mapStateToProps, {getBugs, deleteBug})(BugsList)
