@@ -1,21 +1,24 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/styles.scss'
-import CreateBugForm from './components/CreateBugForm'
-import BugsList from './components/BugsList'
+import RedirectRouter from './components/RedirectRouter'
 import store from './store'
 import {Provider} from 'react-redux'
+import {loadUser} from './actions/authActions'
 
-function App() {
-  return (
-    <Provider store={store}>
-      <div className="App">
-        <BugsList />
-        <CreateBugForm />
-      </div>
-    </Provider>
-  );
+class App extends Component {
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
+  render(){
+    const {isAuthenticated} = store.getState().auth
+    return (
+      <Provider store={store}>
+        <RedirectRouter />
+      </Provider>
+    );
+  }
 }
 
 export default App;

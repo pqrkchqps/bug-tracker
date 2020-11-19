@@ -57,7 +57,8 @@ class CreateBugForm extends React.Component {
   submitHandler = (e) => {
     e.preventDefault();
     const bug = this.state;
-    this.props.addBug(bug);
+    console.log(this.props)
+    this.props.addBug(bug, this.props.projectId);
   }
   /*
   Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)

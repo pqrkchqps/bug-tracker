@@ -1,40 +1,48 @@
 import React, {Component} from 'react'
+import { Link } from "react-router-dom";
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
-import {getBugs, deleteBug} from '../actions/bugActions'
+import {getProjects, deleteProject} from '../actions/projectActions'
 import PropTypes from 'prop-types'
 
-class BugsList extends Component {
+class ProjectsList extends Component {
   constructor(props){
     super(props)
   }
 
   componentDidMount(){
-    this.props.getBugs(this.props.projectId);
+    const {user, isAuthenticated} = this.props.auth;
+    if (isAuthenticated){
+      this.props.getProjects(user.id);
+    }
   }
 
   onDeleteClick = (id) => {
-    this.props.deleteBug(id, this.props.projectId);
+    this.props.deleteProject(id);
   }
 
+  onTrackerClick = (id) => {
+    this.props.deleteProject(id);
+  }
   render() {
-    let bugs = this.props.bug['bugs_'+this.props.projectId];
-    if (bugs === undefined) bugs = [];
+    const {projects} = this.props.project
+    console.log(projects);
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="shopping-list">
-            {bugs.map(({bug_name, id}) => (
+            {projects.map(({name, id}) => (
               <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
-                  { this.props.isAuthenticated ? (
+                  { this.props.auth.isAuthenticated ? (
                     <Button className="remove-btn" color="danger" size="sm"
                       onClick={this.onDeleteClick.bind(this, id)}>
                       &times;
                     </Button>
                   ) : null}
-                  {bug_name}
+                  {name}
+                  <Link to={"/projects/"+id}>Project Tracker Page</Link>
                 </ListGroupItem>
               </CSSTransition>
             ))}
@@ -45,15 +53,15 @@ class BugsList extends Component {
   }
 }
 
-BugsList.propTypes = {
-  getBugs: PropTypes.func.isRequired,
-  bug: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool
+ProjectsList.propTypes = {
+  getProjects: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  bug: state.bug,
-  isAuthenticated: state.auth.isAuthenticated
+  project: state.project,
+  auth: state.auth
 })
 
-export default connect(mapStateToProps, {getBugs, deleteBug})(BugsList)
+export default connect(mapStateToProps, {getProjects, deleteProject})(ProjectsList)

@@ -1,0 +1,65 @@
+import React from 'react'
+import {connect} from 'react-redux'
+import {addProject} from '../actions/projectActions'
+
+class CreateProjectForm extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      name: '',
+      version: '',
+    }
+  }
+  projectNameChangeHandler = (e) => {
+    this.setState({name: e.target.value});
+  }
+  versionChangeHandler = (e) => {
+    this.setState({version: e.target.value});
+  }
+
+  submitHandler = (e) => {
+    e.preventDefault();
+    const project = this.state;
+    const {user} = this.props.auth;
+    console.log(user)
+    this.props.addProject(project, user.id);
+  }
+  /*
+  Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)
+  Assigned To, Created By
+  Summary - a one-sentence summary of the problem
+  Status whiteboard- place to add notes and tags to the bug
+  Keywords to tag the bug for search?
+  Version: The version of the software the bug was found in
+  Severity: how important is the bug to fix
+  CC list: A list of people who get mail when the bug changes
+  Time Tracking: original estimate, current est, hours worked, % complete, deadline
+  */
+  render(){
+    return (
+      <form id="create-bug-form" onSubmit={this.submitHandler}>
+        <h3 className="title">Create A New Project</h3>
+        <div className="form-box">
+          <label className="form-label">Project Name</label>
+          <input className="form-input" onChange={this.projectNameChangeHandler} type="text" />
+        </div>
+        <div className="form-box">
+          <label className="form-label">Current Version</label>
+          <input className="form-input" onChange={this.versionChangeHandler} type="text" />
+        </div>
+        <div className="form-box">
+          <label className="form-label">Submit</label>
+          <input className="form-input" type="submit" />
+        </div>
+      </form>
+    )
+  }
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  project: state.project
+})
+
+export default connect(mapStateToProps, {addProject})(CreateProjectForm);
