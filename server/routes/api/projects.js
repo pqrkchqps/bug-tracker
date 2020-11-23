@@ -4,8 +4,8 @@ const auth = require('../../middleware/auth')
 const db = require('../../db/db')
 
 
-router.get('/:userId', (req, res) => {
-  db.any('SELECT * FROM projects_users WHERE user_id = $1', req.params.userId)
+router.get('/for_user', auth, (req, res) => {
+  db.any('SELECT * FROM projects_users WHERE user_id = $1', req.user.id)
   .then(userProjects => {
     if (userProjects.length === 0) return res.json([])
     console.log(userProjects)
@@ -28,22 +28,23 @@ router.get('/:userId', (req, res) => {
   })
 })
 
-router.post('/:userId', auth, (req, res) => {
+router.post('/', auth, (req, res) => {
   const project = req.body;
-  console.log(project, req.params.userId)
+  console.log(project, req.user.id)
   const values = [
     project.name,
+    project.image_name,
     project.version
   ];
   db.one(
-    'INSERT INTO projects (name, version, created_on) '
-    +'VALUES ($1, $2, current_timestamp) RETURNING *;',
+    'INSERT INTO projects (name, image_name, version, created_on) '
+    +'VALUES ($1, $2, $3, current_timestamp) RETURNING *;',
     values
   ).then(newProject => {
     console.log(newProject)
     db.none('INSERT INTO projects_users (project_id, user_id, created_on) '
     +'VALUES ($1, $2, current_timestamp)',
-    [newProject.id, req.params.userId]
+    [newProject.id, req.user.id]
     ).catch(error => {
       console.log(error);
     })

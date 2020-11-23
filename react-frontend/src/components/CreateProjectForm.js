@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import {connect} from 'react-redux'
 import {addProject} from '../actions/projectActions'
 
@@ -20,10 +21,23 @@ class CreateProjectForm extends React.Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    const project = this.state;
-    const {user} = this.props.auth;
-    console.log(user)
-    this.props.addProject(project, user.id);
+    const url = "https://api.cloudinary.com/v1_1/hqds0bho9/image/upload";
+
+    const files = document.querySelector("[type=file]").files;
+    let file = files[0];
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "urdfduv1");
+
+
+    axios.post(url,formData)
+    .then((data) => {
+      console.log(data)
+      const project = {...this.state, image_name: data.data.public_id};
+      const {user} = this.props.auth;
+      this.props.addProject(project);
+    });
   }
   /*
   Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)
@@ -44,6 +58,7 @@ class CreateProjectForm extends React.Component {
           <label className="form-label">Project Name</label>
           <input className="form-input" onChange={this.projectNameChangeHandler} type="text" />
         </div>
+        <input type="file" name="file" />
         <div className="form-box">
           <label className="form-label">Current Version</label>
           <input className="form-input" onChange={this.versionChangeHandler} type="text" />

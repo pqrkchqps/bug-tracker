@@ -5,11 +5,11 @@ import {returnErrors} from './errorActions'
 
 export const getBugs = (projectId) => dispatch => {
   dispatch(setBugsLoading())
-  axios.get('/api/bugs' + (projectId ? '/'+projectId : ''))
+  axios.get('/api/bugs/'+projectId)
   .then(res => {
     dispatch({
       type: GET_BUGS,
-      payload: res.data
+      payload: {bugs: res.data, projectId}
     })
   }).catch(err => {
     dispatch(returnErrors(err.response.data, err.response.status));
@@ -17,11 +17,11 @@ export const getBugs = (projectId) => dispatch => {
 }
 
 export const deleteBug = (id,projectId) => (dispatch, getState) => {
-  axios.delete('/api/bugs/'+id + (projectId ? '/'+projectId : ''), tokenConfig(getState))
+  axios.delete('/api/bugs/'+id + '/'+projectId, tokenConfig(getState))
   .then(res => {
     dispatch({
       type: DELETE_BUG,
-      payload: id
+      payload: {id, projectId}
     })
   }).catch(err => {
     dispatch(returnErrors(err.response.data, err.response.status));
@@ -29,11 +29,11 @@ export const deleteBug = (id,projectId) => (dispatch, getState) => {
 }
 
 export const addBug = (bug, projectId) => (dispatch, getState) => {
-  axios.post('/api/bugs' + (projectId ? '/'+projectId : ''), bug, tokenConfig(getState))
+  axios.post('/api/bugs/'+projectId, bug, tokenConfig(getState))
   .then(res => {
     dispatch({
       type: ADD_BUG,
-      payload: res.data
+      payload: {bug: res.data, projectId}
     })
   })
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from "react-router-dom";
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import {Image} from 'cloudinary-react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getProjects, deleteProject} from '../actions/projectActions'
@@ -32,7 +33,7 @@ class ProjectsList extends Component {
       <Container>
         <ListGroup>
           <TransitionGroup className="shopping-list">
-            {projects.map(({name, id}) => (
+            {projects.map(({name, id, image_name}) => (
               <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
                   { this.props.auth.isAuthenticated ? (
@@ -42,6 +43,7 @@ class ProjectsList extends Component {
                     </Button>
                   ) : null}
                   {name}
+                  <Image cloudName="hqds0bho9" publicId={image_name} width="150" crop="scale"/>
                   <Link to={"/projects/"+id}>Project Tracker Page</Link>
                 </ListGroupItem>
               </CSSTransition>

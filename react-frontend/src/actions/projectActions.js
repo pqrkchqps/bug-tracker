@@ -3,9 +3,9 @@ import { GET_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from './ty
 import {tokenConfig} from './authActions'
 import {returnErrors} from './errorActions'
 
-export const getProjects = (userId) => dispatch => {
+export const getProjects = () => (dispatch, getState) => {
   dispatch(setProjectsLoading())
-  axios.get('/api/projects/'+userId)
+  axios.get('/api/projects/for_user', tokenConfig(getState))
   .then(res => {
     dispatch({
       type: GET_PROJECTS,
@@ -28,10 +28,10 @@ export const deleteProject = (id) => (dispatch, getState) => {
   })
 }
 
-export const addProject = (project, userId) => (dispatch, getState) => {
-  console.log(userId)
-  axios.post('/api/projects/'+userId, project, tokenConfig(getState))
+export const addProject = (project) => (dispatch, getState) => {
+  axios.post('/api/projects/', project, tokenConfig(getState))
   .then(res => {
+    console.log(res)
     dispatch({
       type: ADD_PROJECT,
       payload: res.data

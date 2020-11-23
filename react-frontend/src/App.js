@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './styles/styles.scss'
+
 import RedirectRouter from './components/RedirectRouter'
 import store from './store'
 import {Provider} from 'react-redux'
