@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
     case GET_PROJECTS:
       return ({
         ...state,
-        projects: action.payload,
+        projects: action.payload.reverse(),
         loading: false
       })
     case DELETE_PROJECT:

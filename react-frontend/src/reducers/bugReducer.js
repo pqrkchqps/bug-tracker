@@ -10,7 +10,7 @@ export default function (state = initialState, action) {
     case GET_BUGS:
       return ({
         ...state,
-        ["bugs_"+action.payload.projectId]: action.payload.bugs,
+        ["bugs_"+action.payload.projectId]: action.payload.bugs.reverse(),
         loading: false
       })
     case DELETE_BUG:
