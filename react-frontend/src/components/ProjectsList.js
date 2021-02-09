@@ -31,24 +31,20 @@ class ProjectsList extends Component {
     console.log(projects);
     return (
       <Container>
-        <ListGroup>
-          <TransitionGroup className="shopping-list">
-            {projects.map(({name, id, image_name}) => (
-              <CSSTransition key={id} timeout={500} classNames="fade">
-                <ListGroupItem>
-                  { this.props.auth.isAuthenticated ? (
-                    <Button className="remove-btn" color="danger" size="sm"
-                      onClick={this.onDeleteClick.bind(this, id)}>
-                      &times;
-                    </Button>
-                  ) : null}
-                  {name}
-                  <Image cloudName="hqds0bho9" publicId={image_name} width="150" crop="scale"/>
-                  <Link to={"/projects/"+id}>Project Tracker Page</Link>
-                </ListGroupItem>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
+        <ListGroup className="projects-list">
+          {projects.map(({name, id, image_name}) => (
+            <ListGroupItem key={id} className="project-block">
+              { this.props.auth.isAuthenticated ? (
+                <Button className="remove-btn" color="danger" size="sm"
+                  onClick={this.onDeleteClick.bind(this, id)}>
+                  &times;
+                </Button>
+              ) : null}
+              {name}
+              <Image cloudName="hqds0bho9" publicId={image_name} width="300" crop="scale"/>
+              <Link to={"/projects/"+id}>Project Tracker Page</Link>
+            </ListGroupItem>
+          ))}
         </ListGroup>
       </Container>
     );

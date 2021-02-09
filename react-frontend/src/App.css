@@ -2,6 +2,10 @@
   margin-right: 0.5rem;
 }
 
+.project-block {
+  width: 330px;
+}
+
 .fade-enter {
   opacity: 0.01;
 }
