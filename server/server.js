@@ -17,11 +17,11 @@ app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/bugs', require('./routes/api/bugs'))
 app.use('/api/projects', require('./routes/api/projects'))
 app.get('*/', function(req, res) {
-  res.sendFile(publicPath), (err) =>{
+  res.sendFile(publicPath, (err) =>{
     if (err) {
       res.status(500).send(err);
     }
-  }
+  })
 })
 
 app.listen(port, () => {
