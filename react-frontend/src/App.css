@@ -12,11 +12,11 @@
   display: table-cell;
 }
 
-.bug-list .remove-btn {  
+.bugs-list .remove-btn {  
   display: table-cell;
 }
 
-.project-list .remove-btn {
+.projects-list .remove-btn {
   margin-right: 0.5rem;
   width: 100%;
 }

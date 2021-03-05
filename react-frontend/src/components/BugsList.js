@@ -24,7 +24,7 @@ class BugsList extends Component {
     return (
       <Container>
         <ListGroup>
-          <TransitionGroup className="bug-list">
+          <TransitionGroup className="bugs-list">
             <ListGroupItem>
               <Row>
                 <Col md="3" className="bug-name">Bug Name</Col>
