@@ -9,7 +9,7 @@ app.use(jsonParser)
 
 const port = process.env.PORT || 5000;
 
-const publicPath = path.join(__dirname, '../react-frontend', 'build');
+const publicPath = path.join(__dirname, '../react-frontend/build/index.html');
 
 //app.use(express.static(publicPath));
 app.use('/api/users', require('./routes/api/users'))
