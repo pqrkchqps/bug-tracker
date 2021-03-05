@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom';
 import {addBug} from '../actions/bugActions'
 
 class CreateBugForm extends React.Component {
@@ -7,58 +8,33 @@ class CreateBugForm extends React.Component {
     super(props);
 
     this.state = {
-      bugName: '',
-      summary: '',
-      severity: '',
-      status: '',
-      createdBy: '',
-      assignedTo: '',
-      version: '',
-      timeEstimate: '',
-      deadline: '',
-      hoursWorked: '',
-      percentComplete: ''
+      bug: {
+        bugName: '',
+        summary: '',
+        severity: '',
+        status: '',
+        createdBy: '',
+        assignedTo: '',
+        version: '',
+        timeEstimate: '',
+        deadline: '',
+        hoursWorked: '',
+        percentComplete: ''
+      },
+      redirect: false
     }
   }
-  bugNameChangeHandler = (e) => {
-    this.setState({bugName: e.target.value});
-  }
-  summaryChangeHandler = (e) => {
-    this.setState({summary: e.target.value});
-  }
-  severityChangeHandler = (e) => {
-    this.setState({severity: e.target.value});
-  }
-  createdByChangeHandler = (e) => {
-    this.setState({createdBy: e.target.value});
-  }
-  statusChangeHandler = (e) => {
-    this.setState({status: e.target.value});
-  }
-  assignedToChangeHandler = (e) => {
-    this.setState({assignedTo: e.target.value});
-  }
-  versionChangeHandler = (e) => {
-    this.setState({version: e.target.value});
-  }
-  timeEstimateChangeHandler = (e) => {
-    this.setState({timeEstimate: e.target.value});
-  }
-  deadlineChangeHandler = (e) => {
-    this.setState({deadline: e.target.value});
-  }
-  hoursWorkedChangeHandler = (e) => {
-    this.setState({hoursWorked: e.target.value});
-  }
-  percentCompleteChangeHandler = (e) => {
-    this.setState({percentComplete: e.target.value});
+  onChangeHandler = (e) => {
+    this.setState({bug: {...this.state.bug, [e.target.name]: e.target.value}});
+    console.log(this.state);
   }
 
   submitHandler = (e) => {
     e.preventDefault();
-    const bug = this.state;
-    console.log(this.props)
+    const bug = this.state.bug;
+    console.log(this.props, bug);
     this.props.addBug(bug, this.props.projectId);
+    this.setState({redirect: true})
   }
   /*
   Status and resolution - what state is the bug in (not even confirmed a bug to fix confirm)
@@ -72,52 +48,110 @@ class CreateBugForm extends React.Component {
   Time Tracking: original estimate, current est, hours worked, % complete, deadline
   */
   render(){
+    if (this.state.redirect){
+      return <Redirect to={"/projects/"+this.props.projectId} />
+    }
     return (
       <form id="create-bug-form" onSubmit={this.submitHandler}>
         <h3 className="title">Create A New Bug</h3>
         <div className="form-box">
           <label className="form-label">Bug Name</label>
-          <input className="form-input" onChange={this.bugNameChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="bugName"
+            id="bugName"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Summary</label>
-          <input className="form-input" onChange={this.summaryChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="summary"
+            id="summary"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Severity</label>
-          <input className="form-input" onChange={this.severityChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text"
+            name="severity"
+            id="severity"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Status</label>
-          <input className="form-input" onChange={this.statusChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="status"
+            id="status"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Created By</label>
-          <input className="form-input" onChange={this.createdByChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="createdBy"
+            id="createdBy"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Assigned To</label>
-          <input className="form-input" onChange={this.assignedToChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="assignedTo"
+            id="assignedTo"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Version Found In</label>
-          <input className="form-input" onChange={this.versionChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="version"
+            id="version"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Time Estimate</label>
-          <input className="form-input" onChange={this.timeEstimateChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="timeEstimate"
+            id="timeEstimate"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Deadline</label>
-          <input className="form-input" onChange={this.deadlineChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="deadline"
+            id="deadline"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Hours Worked</label>
-          <input className="form-input" onChange={this.hoursWorkedChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="hoursWorked"
+            id="hoursWorked"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Percent Complete</label>
-          <input className="form-input" onChange={this.percentCompleteChangeHandler} type="text" />
+          <input className="form-input" 
+            onChange={this.onChangeHandler} 
+            type="text" 
+            name="percentComplete"
+            id="percentComplete"
+          />
         </div>
         <div className="form-box">
           <label className="form-label">Submit</label>

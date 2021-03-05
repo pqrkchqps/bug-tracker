@@ -1,9 +1,48 @@
-.remove-btn {
+
+.bug-list.list-group {
+  display: table;
+  width: 100%;
+}
+
+.bug-name {
+  display: table-cell;
+}
+
+.bug-summary {
+  display: table-cell;
+}
+
+.bug-list .remove-btn {  
+  display: table-cell;
+}
+
+.project-list .remove-btn {
   margin-right: 0.5rem;
+  width: 100%;
 }
 
 .project-block {
-  width: 330px;
+  width: 345px;
+  text-align: center;
+  float: left;
+}
+
+.project-block.list-group-item+.list-group-item {
+  margin-left: 20px;
+  border-top-width: 1px;
+} 
+
+.project-image-holder {
+  width: 100%;
+  height: 200px;
+}
+
+.projects-list.list-group {
+  display: block;
+}
+
+.project-name {
+  width: 100%;
 }
 
 .fade-enter {

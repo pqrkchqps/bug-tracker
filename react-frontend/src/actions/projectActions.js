@@ -3,9 +3,22 @@ import { GET_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from './ty
 import {tokenConfig} from './authActions'
 import {returnErrors} from './errorActions'
 
-export const getProjects = () => (dispatch, getState) => {
+export const getUserProjects = () => (dispatch, getState) => {
   dispatch(setProjectsLoading())
   axios.get('/api/projects/for_user', tokenConfig(getState))
+  .then(res => {
+    dispatch({
+      type: GET_PROJECTS,
+      payload: res.data
+    })
+  }).catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  })
+}
+
+export const getAllProjects = () => (dispatch) => {
+  dispatch(setProjectsLoading())
+  axios.get('/api/projects')
   .then(res => {
     dispatch({
       type: GET_PROJECTS,

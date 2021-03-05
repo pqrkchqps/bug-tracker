@@ -28,6 +28,16 @@ router.get('/for_user', auth, (req, res) => {
   })
 })
 
+router.get('/', (req, res) => {
+  db.any('SELECT * FROM projects')
+  .then(projects => {
+    res.json(projects);
+  })
+  .catch(error => {
+    console.log(error);
+  })
+})
+
 router.post('/', auth, (req, res) => {
   const project = req.body;
   console.log(project, req.user.id)

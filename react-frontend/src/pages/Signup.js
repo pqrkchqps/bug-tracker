@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import { Card, Logo, Form, Input, Button } from '../components/AuthForms';
-
+import Header from '../components/Header'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register } from '../actions/authActions'
@@ -63,49 +63,46 @@ class Signup extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
-
-    if (isAuthenticated) {
-      return <Redirect to="/" />
-    }
-
     return (
-      <Card>
-        <Logo src={logoImg} />
-        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
-            <Form>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Name"
-                className="mb-3"
-                onChange={this.onChange}
-              />
-              <Input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Email"
-                className="mb-3"
-                onChange={this.onChange}
-              />
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                className="mb-3"
-                onChange={this.onChange}
-              />
-              <Button
-                color="dark
-                style={{marginTop: '2rem'}}"
-                block
-                onClick={this.onSubmit}>Signup</Button>
-            </Form>
-        <Link to="/login">Already have an account?</Link>
-      </Card>
+      <div>
+        <Header />
+        <Card>
+          <Logo src={logoImg} />
+          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+              <Form>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
+                <Input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
+                <Button
+                  color="dark
+                  style={{marginTop: '2rem'}}"
+                  block
+                  onClick={this.onSubmit}>Signup</Button>
+              </Form>
+          <Link to="/login">Already have an account?</Link>
+        </Card>
+      </div>
     );
   }
 }

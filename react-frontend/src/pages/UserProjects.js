@@ -1,23 +1,26 @@
 import React, { Component, Fragment } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import ProjectsList from '../components/ProjectsList'
 import Header from '../components/Header'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import {Button} from 'reactstrap'
 import {logout} from '../actions/authActions'
 import {
-  Collapse,
+  Button,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
   Nav,
-  NavLink,
   NavItem,
   Container
 } from 'reactstrap'
 
-class Home extends Component {
+class UserProjects extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isRedirect: false
+    }
+  }
   static propTypes = {
     auth: PropTypes.object.isRequired
   }
@@ -27,10 +30,17 @@ class Home extends Component {
   }
 
   render() {
-     return (
+    return (
       <div>
         <Header />
-        <ProjectsList home="true"/>
+        {
+          this.props.auth.isAuthenticated ?
+            <Container>
+              <Button ><Link to="/projects/add">Add Project</Link></Button>
+            </Container>
+            : null
+        }
+        <ProjectsList />
       </div>
     );
   }
@@ -40,4 +50,4 @@ const mapStateToProps= state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {logout})(Home)
+export default connect(mapStateToProps, {logout})(UserProjects)

@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Card, Logo, Form, Input, Button } from '../components/AuthForms';
 import { Alert } from 'reactstrap';
-
+import Header from '../components/Header'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions/authActions'
@@ -63,28 +62,31 @@ class Login extends Component {
     }
 
     return (
-      <Card>
-        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
-        <Logo src={logoImg} />
-        <Form>
-          <Input
-            type="email"
-            name="email"
-            placeholder="email"
-            id="email"
-            onChange={this.onChange}
-          />
-          <Input
-            type="password"
-            name="password"
-            placeholder="password"
-            id="password"
-            onChange={this.onChange}
-          />
-          <Button onClick={this.onSubmit}>Sign In</Button>
-        </Form>
-        <Link to="/signup">Don't have an account?</Link>
-      </Card>
+      <div>
+        <Header />
+        <Card>
+          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+          <Logo src={logoImg} />
+          <Form>
+            <Input
+              type="email"
+              name="email"
+              placeholder="email"
+              id="email"
+              onChange={this.onChange}
+            />
+            <Input
+              type="password"
+              name="password"
+              placeholder="password"
+              id="password"
+              onChange={this.onChange}
+            />
+            <Button onClick={this.onSubmit}>Sign In</Button>
+          </Form>
+          <Link to="/signup">Don't have an account?</Link>
+        </Card>
+      </div>
     );
   }
 }

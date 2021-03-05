@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {addProject} from '../actions/projectActions'
+import { Redirect } from 'react-router-dom';
 
 class CreateProjectForm extends React.Component {
   constructor(props){
@@ -10,6 +11,7 @@ class CreateProjectForm extends React.Component {
     this.state = {
       name: '',
       version: '',
+      redirect: false,
     }
   }
   projectNameChangeHandler = (e) => {
@@ -37,6 +39,7 @@ class CreateProjectForm extends React.Component {
       const project = {...this.state, image_name: data.data.public_id};
       const {user} = this.props.auth;
       this.props.addProject(project);
+      this.setState({redirect: true})
     });
   }
   /*
@@ -51,6 +54,9 @@ class CreateProjectForm extends React.Component {
   Time Tracking: original estimate, current est, hours worked, % complete, deadline
   */
   render(){
+    if (this.state.redirect){
+      return <Redirect to="/projects" />
+    }
     return (
       <form id="create-bug-form" onSubmit={this.submitHandler}>
         <h3 className="title">Create A New Project</h3>

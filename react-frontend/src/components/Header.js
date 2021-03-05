@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import CreateProjectForm from '../components/CreateProjectForm'
-import ProjectsList from '../components/ProjectsList'
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
@@ -17,13 +15,7 @@ import {
   Container
 } from 'reactstrap'
 
-class Projects extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      isRedirect: false
-    }
-  }
+class Header extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired
   }
@@ -33,7 +25,8 @@ class Projects extends Component {
   }
 
   render() {
-    const { user } = this.props.auth
+    const { isAuthenticated, user } = this.props.auth
+
     const authLinks = (
       <Fragment>
         <NavItem>
@@ -49,19 +42,24 @@ class Projects extends Component {
         </NavItem>
       </Fragment>
     )
+
+    const guestLinks = (
+        <Fragment>
+          <NavItem>
+            <Link to="/login">Login</Link>
+          </NavItem>
+        </Fragment>
+    )
+
     return (
-      <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
-          <Container>
+            <Container>
             <NavbarBrand href="/">DreamerAssist.fund</NavbarBrand>
             <Nav className="ml-auto" navbar>
-              {authLinks}
+                {isAuthenticated ? authLinks : guestLinks}
             </Nav>
-          </Container>
+            </Container>
         </Navbar>
-        <ProjectsList />
-        <CreateProjectForm />
-      </div>
     );
   }
 }
@@ -70,4 +68,4 @@ const mapStateToProps= state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {logout})(Projects)
+export default connect(mapStateToProps, {logout})(Header)

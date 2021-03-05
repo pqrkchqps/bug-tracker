@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Col, Row, Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getBugs, deleteBug} from '../actions/bugActions'
@@ -24,17 +24,29 @@ class BugsList extends Component {
     return (
       <Container>
         <ListGroup>
-          <TransitionGroup className="shopping-list">
-            {bugs.map(({bug_name, id}) => (
+          <TransitionGroup className="bug-list">
+            <ListGroupItem>
+              <Row>
+                <Col md="3" className="bug-name">Bug Name</Col>
+                <Col md="8" className="bug-summary">Summary</Col>
+                <Col md="1" className="remove-btn">Remove</Col>
+              </Row>
+            </ListGroupItem>
+            {bugs.map(({bug_name, summary, id}) => (
               <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
-                  { this.props.isAuthenticated ? (
-                    <Button className="remove-btn" color="danger" size="sm"
-                      onClick={this.onDeleteClick.bind(this, id)}>
-                      &times;
-                    </Button>
-                  ) : null}
-                  {bug_name}
+                  <Row>
+                    <Col md="3" className="bug-name">{bug_name}</Col>
+                    <Col md="8" className="bug-summary">{summary}</Col>
+                    <Col md="1" className="remove-btn">
+                      { this.props.isAuthenticated ? (
+                        <Button className="remove-btn" color="danger" 
+                          onClick={this.onDeleteClick.bind(this, id)}>
+                          &times;
+                        </Button>
+                      ) : null}
+                    </Col>
+                  </Row>
                 </ListGroupItem>
               </CSSTransition>
             ))}

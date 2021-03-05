@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Link, Redirect } from "react-router-dom";
-import ProjectsList from '../components/ProjectsList'
+import { Link, Redirect } from 'react-router-dom';
+import CreateProjectForm from '../components/CreateProjectForm'
 import Header from '../components/Header'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -17,7 +17,10 @@ import {
   Container
 } from 'reactstrap'
 
-class Home extends Component {
+class AddProject extends Component {
+  constructor(props){
+    super(props)
+  }
   static propTypes = {
     auth: PropTypes.object.isRequired
   }
@@ -27,10 +30,17 @@ class Home extends Component {
   }
 
   render() {
-     return (
+    return (
       <div>
         <Header />
-        <ProjectsList home="true"/>
+        <Container>
+          <Button >
+            <Link to={"/projects/"}>
+              Return To User Projects
+            </Link>
+          </Button>
+        </Container>
+        <CreateProjectForm />
       </div>
     );
   }
@@ -40,4 +50,4 @@ const mapStateToProps= state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {logout})(Home)
+export default connect(mapStateToProps, {logout})(AddProject)

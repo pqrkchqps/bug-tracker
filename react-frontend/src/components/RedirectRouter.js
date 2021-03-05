@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
-import Projects from '../pages/Projects';
+import UserProjects from '../pages/UserProjects';
+import AddProject from '../pages/AddProject';
+import AddBug from '../pages/AddBug';
 import ProjectTracker from '../pages/ProjectTracker';
 import {connect} from 'react-redux';
 
@@ -14,8 +16,10 @@ class RedirectRouter extends Component {
       <Router>
         <div>
           <Switch>
+            {isAuthenticated?<Route path="/projects/add" component={AddProject} />:<Route path="/projects/add" component={Login} />}
+            {isAuthenticated?<Route path="/projects/:id/add" component={AddBug} />:<Route path="/projects/:id/add" component={Login} />}
             {<Route path="/projects/:id" component={ProjectTracker} />}
-            {isAuthenticated?<Route exact path="/projects" component={Projects} />:<Route path="/projects" component={Login} />}
+            {isAuthenticated?<Route exact path="/projects" component={UserProjects} />:<Route path="/projects" component={Login} />}
             {isAuthenticated?<Route path="/login" component={Home} />:<Route path="/login" component={Login} />}
             {isAuthenticated?<Route path="/signup" component={Home} />:<Route path="/signup" component={Signup} />}
             <Route path="/" component={Home} />

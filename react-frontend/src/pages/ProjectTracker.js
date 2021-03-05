@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import CreateBugForm from '../components/CreateBugForm'
 import BugsList from '../components/BugsList'
+import Header from '../components/Header'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
@@ -27,46 +28,17 @@ class ProjectTracker extends Component {
   }
 
   render() {
-    const { isAuthenticated, user } = this.props.auth
-    const authLinks = (
-      <Fragment>
-        <NavItem>
-          <span className="navbar-text mr-3">
-            <strong>{user ? `Welcome ${user.name}`: ''}</strong>
-          </span>
-        </NavItem>
-        <NavItem>
-          <Button onClick={this.onClickLogout}>Logout</Button>
-        </NavItem>
-        <NavItem>
-          <Link to="/projects">Projects Page</Link>
-        </NavItem>
-      </Fragment>
-    )
-
-    const guestLinks = (
-        <Fragment>
-          <NavItem>
-            <Link to="/login">Login Page</Link>
-          </NavItem>
-          <NavItem>
-            <Link to="/signup">Signup Page</Link>
-          </NavItem>
-        </Fragment>
-    )
-
     return (
       <div>
-        <Navbar color="dark" dark expand="sm" className="mb-5">
-          <Container>
-            <NavbarBrand href="/">DreamerAssist.fund</NavbarBrand>
-            <Nav className="ml-auto" navbar>
-              {isAuthenticated ? authLinks : guestLinks}
-            </Nav>
-          </Container>
-        </Navbar>
+        <Header />
+        {
+          this.props.auth.isAuthenticated ?
+            <Container>
+              <Button ><Link to={"/projects/"+this.props.match.params.id+"/add"}>Add Bug</Link></Button>
+            </Container>
+            : null
+        }
         <BugsList projectId={this.props.match.params.id} />
-        <CreateBugForm projectId={this.props.match.params.id} />
       </div>
     );
   }
