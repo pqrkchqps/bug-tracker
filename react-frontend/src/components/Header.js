@@ -38,7 +38,7 @@ class Header extends Component {
           <Button onClick={this.onClickLogout}>Logout</Button>
         </NavItem>
         <NavItem>
-          <Link to="/projects">Projects Page</Link>
+          <Link to="/projects">Your Projects</Link>
         </NavItem>
       </Fragment>
     )
