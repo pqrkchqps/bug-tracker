@@ -11,7 +11,9 @@ export default function (state = initialState, action) {
       return ({
         ...state,
         ["bugs_"+action.payload.projectId]: action.payload.bugs.reverse(),
-        loading: false
+        loading: false,
+        projectId: action.payload.projectId,
+        project_users: action.payload.project_users,
       })
     case DELETE_BUG:
       return ({
@@ -27,7 +29,9 @@ export default function (state = initialState, action) {
     case BUGS_LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
+        projectId: null,
+        project_users: [],
       }
     default:
       return state;

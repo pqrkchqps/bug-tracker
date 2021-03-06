@@ -7,7 +7,16 @@ router.get('/:projectId', (req, res) => {
   db.any('SELECT * from bugs_'+req.params.projectId)
   .then(bugs => {
     console.log(bugs)
-    res.json(bugs);
+    db.any('SELECT user_id from projects_users WHERE project_id = $1', [req.params.projectId])
+    .then(project_users => {
+      console.log("project users:", project_users)
+      var project_users_array = project_users.map(i => i.user_id)
+      res.json({bugs, project_users: project_users_array});
+    })
+    .catch(error => {
+      console.log(error)
+      return res.status(500).json({msg: "Database error in looking up users"})
+    })
   })
 })
 
@@ -21,10 +30,11 @@ router.get('/', (req, res) => {
 
 router.post('/:projectId', auth, (req, res) => {
   const bug = req.body;
+  console.log("user object:", req.user)
   const values = [
     bug.assignedTo,
     bug.bugName,
-    bug.createdBy,
+    req.user.name,
     bug.deadline,
     bug.hoursWorked,
     bug.percentComplete,
@@ -32,28 +42,47 @@ router.post('/:projectId', auth, (req, res) => {
     bug.status,
     bug.summary,
     bug.timeEstimate,
-    bug.version
+    bug.version,
   ];
-  db.one(
-    'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
-    +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
-    +'ON CONFLICT (bug_name) DO UPDATE '
-    +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;',
-    values
-  ).then( newBug => {
-    res.json(newBug);
+  db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])
+  .then(project_user => {
+    console.log("project user:", project_user)
+
+    db.one(
+      'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
+      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
+      +'ON CONFLICT (bug_name) DO UPDATE '
+      +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;',
+      values
+    ).then( newBug => {
+      res.json(newBug);
+    })
+    .catch(error => {
+      console.log(error);
+    })
   })
   .catch(error => {
-    console.log(error);
+    console.log(error)
+    return res.status(401).json({msg: "User does not own resource"})
   })
 });
 
 
 router.delete('/:id/:projectId', auth, (req, res) => {
-  db.none('DELETE from bugs_'+req.params.projectId+' WHERE id = '+req.params.id)
-  .then(t =>{
-    res.send(`Deleted bug with id=${req.params.id}`);
-  }).catch(error => res.status(404).send('bug id not found'))
+  console.log("reached delete for bug api")
+  console.log("user object:", req.user)
+  db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])
+  .then(project_user => {
+    console.log("project user:", project_user)
+    db.none('DELETE from bugs_'+req.params.projectId+' WHERE id = '+req.params.id)
+    .then(t =>{
+      res.send(`Deleted bug with id=${req.params.id}`);
+    }).catch(error => res.status(404).send('bug id not found'))
+  })
+  .catch(error => {
+    console.log(error)
+    return res.status(401).json({msg: "User does not own resource"})
+  })
 })
 
 router.post('/', auth, (req, res) => {

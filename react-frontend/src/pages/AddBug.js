@@ -21,9 +21,6 @@ class AddBug extends Component {
   constructor(props){
     super(props)
   }
-  static propTypes = {
-    auth: PropTypes.object.isRequired
-  }
 
   onClickLogout = () => {
     this.props.logout()
@@ -47,7 +44,6 @@ class AddBug extends Component {
 }
 
 const mapStateToProps= state => ({
-  auth: state.auth
 });
 
 export default connect(mapStateToProps, {logout})(AddBug)

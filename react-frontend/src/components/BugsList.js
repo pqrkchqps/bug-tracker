@@ -20,6 +20,9 @@ class BugsList extends Component {
 
   render() {
     let bugs = this.props.bug['bugs_'+this.props.projectId];
+    const {isAuthenticated, project_users, user_id} = this.props;
+    console.log("project_users:", project_users)
+    console.log("user_id:", user_id);
     if (bugs === undefined) bugs = [];
     return (
       <Container>
@@ -39,7 +42,7 @@ class BugsList extends Component {
                     <Col md="3" className="bug-name">{bug_name}</Col>
                     <Col md="8" className="bug-summary">{summary}</Col>
                     <Col md="1" className="remove-btn">
-                      { this.props.isAuthenticated ? (
+                      { isAuthenticated && project_users.includes(user_id) ? (
                         <Button className="remove-btn" color="danger" 
                           onClick={this.onDeleteClick.bind(this, id)}>
                           &times;
@@ -60,12 +63,16 @@ class BugsList extends Component {
 BugsList.propTypes = {
   getBugs: PropTypes.func.isRequired,
   bug: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  project_users: PropTypes.array,
+  user_id: PropTypes.number
 }
 
 const mapStateToProps = state => ({
   bug: state.bug,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  project_users: state.bug.project_users,
+  user_id: state.auth.user ? state.auth.user.id : null
 })
 
 export default connect(mapStateToProps, {getBugs, deleteBug})(BugsList)

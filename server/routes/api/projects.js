@@ -58,7 +58,7 @@ router.post('/', auth, (req, res) => {
     ).catch(error => {
       console.log(error);
     })
-    db.none('CREATE TABLE IF NOT EXISTS bugs_$1 (id SERIAL PRIMARY KEY,  assigned_to VARCHAR(100), bug_name VARCHAR(100) UNIQUE,  created_by VARCHAR(100),  deadline VARCHAR(100),  hours_worked VARCHAR(100),  percent_complete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  time_estimate VARCHAR(100),  version VARCHAR(100),  created_on DATE NOT NULL);', newProject.id);
+    db.none('CREATE TABLE IF NOT EXISTS bugs_$1 (id SERIAL PRIMARY KEY,  assigned_to VARCHAR(100), bug_name VARCHAR(100) UNIQUE,  created_by VARCHAR(100),  deadline VARCHAR(100),  hours_worked VARCHAR(100),  percent_complete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  time_estimate VARCHAR(100),  version VARCHAR(100), created_on DATE NOT NULL);', newProject.id);
     res.json(newProject);
   })
   .catch(error => {

@@ -20,7 +20,9 @@ import {
 
 class ProjectTracker extends Component {
   static propTypes = {
-    auth: PropTypes.object.isRequired
+    isAuthenticated: PropTypes.bool,
+    project_users: PropTypes.array,
+    user_id: PropTypes.number
   }
 
   onClickLogout = () => {
@@ -28,15 +30,17 @@ class ProjectTracker extends Component {
   }
 
   render() {
+    const {isAuthenticated, project_users, user_id} = this.props;
+
     return (
       <div>
         <Header />
         {
-          this.props.auth.isAuthenticated ?
+          isAuthenticated && project_users.includes(user_id) ? (
             <Container>
               <Button ><Link to={"/projects/"+this.props.match.params.id+"/add"}>Add Bug</Link></Button>
             </Container>
-            : null
+            ) : null
         }
         <BugsList projectId={this.props.match.params.id} />
       </div>
@@ -45,7 +49,9 @@ class ProjectTracker extends Component {
 }
 
 const mapStateToProps= state => ({
-  auth: state.auth
+  isAuthenticated: state.auth.isAuthenticated,
+  project_users: state.bug.project_users,
+  user_id: state.auth.user ? state.auth.user.id : null
 });
 
 export default connect(mapStateToProps, {logout})(ProjectTracker)
