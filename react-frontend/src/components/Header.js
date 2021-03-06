@@ -54,7 +54,7 @@ class Header extends Component {
     return (
         <Navbar color="dark" dark expand="sm" className="mb-5">
             <Container>
-            <NavbarBrand href="/">DreamerAssist.fund</NavbarBrand>
+            <NavbarBrand href="/">Dreamer Assist</NavbarBrand>
             <Nav className="ml-auto" navbar>
                 {isAuthenticated ? authLinks : guestLinks}
             </Nav>
