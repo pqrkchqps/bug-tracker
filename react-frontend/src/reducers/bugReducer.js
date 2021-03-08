@@ -1,7 +1,9 @@
 import { GET_BUGS, ADD_BUG, DELETE_BUG, BUGS_LOADING} from '../actions/types'
 
  const initialState = {
-   loading: false
+   loading: false,
+   projectId: null,
+   project_users: []
  }
 
 
