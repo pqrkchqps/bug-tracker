@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Col, Row, Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Link} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getBugs, deleteBug} from '../actions/bugActions'
@@ -8,6 +9,9 @@ import PropTypes from 'prop-types'
 class BugsList extends Component {
   constructor(props){
     super(props)
+    this.state = {
+      redirect: false
+    }
   }
 
   componentDidMount(){
@@ -31,7 +35,8 @@ class BugsList extends Component {
             <ListGroupItem>
               <Row>
                 <Col md="3" className="bug-name">Bug Name</Col>
-                <Col md="8" className="bug-summary">Summary</Col>
+                <Col md="7" className="bug-summary">Summary</Col>
+                <Col md="1" className="edit-btn">Edit</Col>
                 <Col md="1" className="remove-btn">Remove</Col>
               </Row>
             </ListGroupItem>
@@ -40,10 +45,17 @@ class BugsList extends Component {
                 <ListGroupItem>
                   <Row>
                     <Col md="3" className="bug-name">{bug_name}</Col>
-                    <Col md="8" className="bug-summary">{summary}</Col>
+                    <Col md="7" className="bug-summary">{summary}</Col>
+                    <Col md="1" className="edit-btn">
+                      { isAuthenticated && project_users.includes(user_id) ? (
+                        <Link to={"/projects/"+this.props.projectId+"/add/"+id}>
+                          <Button className="edit-btn" color="info" >&times;</Button>
+                        </Link>
+                      ) : null}
+                    </Col>
                     <Col md="1" className="remove-btn">
                       { isAuthenticated && project_users.includes(user_id) ? (
-                        <Button className="remove-btn" color="danger" 
+                        <Button className="remove-btn" color="danger"
                           onClick={this.onDeleteClick.bind(this, id)}>
                           &times;
                         </Button>

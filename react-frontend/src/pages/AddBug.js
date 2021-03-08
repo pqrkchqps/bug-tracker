@@ -32,12 +32,15 @@ class AddBug extends Component {
         <Header />
         <Container>
           <Button >
-            <Link to={"/projects/"+this.props.match.params.id}>
+            <Link to={"/projects/"+this.props.match.params.projectId}>
               Return To Project Tracker
             </Link>
           </Button>
         </Container>
-        <CreateBugForm projectId={this.props.match.params.id} />
+        <CreateBugForm 
+          projectId={this.props.match.params.projectId} 
+          bugId={this.props.match.params.bugId}
+        />
       </div>
     );
   }

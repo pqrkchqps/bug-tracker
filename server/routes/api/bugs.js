@@ -20,41 +20,42 @@ router.get('/:projectId', (req, res) => {
   })
 })
 
-router.get('/', (req, res) => {
-  db.any('SELECT * from bugs')
-  .then(bugs => {
-    console.log(bugs)
-    res.json(bugs);
-  })
-})
-
 router.post('/:projectId', auth, (req, res) => {
   const bug = req.body;
   console.log("user object:", req.user)
-  const values = [
-    bug.assignedTo,
-    bug.bugName,
-    req.user.name,
+  let values = [
+    bug.assigned_to,
+    bug.bug_name,
+    bug.created_by,
     bug.deadline,
-    bug.hoursWorked,
-    bug.percentComplete,
+    bug.hours_worked,
+    bug.percent_complete,
     bug.severity,
     bug.status,
     bug.summary,
-    bug.timeEstimate,
+    bug.time_estimate,
     bug.version,
   ];
+  var insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
+    +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) RETURNING *;'
+  
+  if (bug.id !== "null"){
+    insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, id, created_on) '
+      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp) '
+      +'ON CONFLICT (id) DO UPDATE '
+      +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;'
+    values = [...values, bug.id]
+  }
+
   db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])
   .then(project_user => {
     console.log("project user:", project_user)
 
-    db.one(
-      'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
-      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
-      +'ON CONFLICT (bug_name) DO UPDATE '
-      +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;',
-      values
-    ).then( newBug => {
+    console.log("insertString:", insertString)
+    console.log("values:", values)
+    db.one(insertString, values)
+    .then( newBug => {
+      console.log("newbug:",newbug)
       res.json(newBug);
     })
     .catch(error => {
@@ -85,34 +86,6 @@ router.delete('/:id/:projectId', auth, (req, res) => {
   })
 })
 
-router.post('/', auth, (req, res) => {
-  const bug = req.body;
-  const values = [
-    bug.assignedTo,
-    bug.bugName,
-    bug.createdBy,
-    bug.deadline,
-    bug.hoursWorked,
-    bug.percentComplete,
-    bug.severity,
-    bug.status,
-    bug.summary,
-    bug.timeEstimate,
-    bug.version
-  ];
-  db.one(
-    'INSERT INTO bugs (assigned_to, bug_name, created_by, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
-    +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
-    +'ON CONFLICT (bug_name) DO UPDATE '
-    +'SET assigned_to = $1, bug_name = $2, created_by = $3, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;',
-    values
-  ).then( newBug => {
-    res.json(newBug);
-  })
-  .catch(error => {
-    console.log(error);
-  })
-});
 
 router.delete('/:id', auth, (req, res) => {
   db.none('DELETE from bugs WHERE id = '+req.params.id)

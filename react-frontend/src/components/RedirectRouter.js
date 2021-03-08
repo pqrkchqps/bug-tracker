@@ -17,7 +17,7 @@ class RedirectRouter extends Component {
         <div>
           <Switch>
             {isAuthenticated?<Route path="/projects/add" component={AddProject} />:<Route path="/projects/add" component={Login} />}
-            {isAuthenticated?<Route path="/projects/:id/add" component={AddBug} />:<Route path="/projects/:id/add" component={Login} />}
+            {isAuthenticated?<Route path="/projects/:projectId/add/:bugId" component={AddBug} />:<Route path="/projects/:projectId/add/:bugId" component={Login} />}
             {<Route path="/projects/:id" component={ProjectTracker} />}
             {isAuthenticated?<Route exact path="/projects" component={UserProjects} />:<Route path="/projects" component={Login} />}
             {isAuthenticated?<Route path="/login" component={Home} />:<Route path="/login" component={Login} />}

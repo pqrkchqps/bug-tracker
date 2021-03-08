@@ -38,7 +38,7 @@ class ProjectTracker extends Component {
         {
           isAuthenticated && project_users.includes(user_id) ? (
             <Container>
-              <Button ><Link to={"/projects/"+this.props.match.params.id+"/add"}>Add Bug</Link></Button>
+              <Button ><Link to={"/projects/"+this.props.match.params.id+"/add/null"}>Add Bug</Link></Button>
             </Container>
             ) : null
         }

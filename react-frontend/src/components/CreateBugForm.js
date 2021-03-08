@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom';
-import {addBug} from '../actions/bugActions'
+import {addBug, getBugs} from '../actions/bugActions'
 
 class CreateBugForm extends React.Component {
   constructor(props){
@@ -9,19 +9,26 @@ class CreateBugForm extends React.Component {
 
     this.state = {
       bug: {
-        bugName: '',
+        bug_name: '',
         summary: '',
         severity: '',
         status: '',
-        createdBy: '',
-        assignedTo: '',
+        created_by: '',
+        assigned_to: '',
         version: '',
-        timeEstimate: '',
+        time_estimate: '',
         deadline: '',
-        hoursWorked: '',
-        percentComplete: ''
+        hours_worked: '',
+        percent_complete: '',
+        id: "null"
       },
-      redirect: false
+      stateLoaded: false
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.bugId !== "null") {
+      this.props.getBugs(this.props.projectId);
     }
   }
   onChangeHandler = (e) => {
@@ -48,9 +55,20 @@ class CreateBugForm extends React.Component {
   Time Tracking: original estimate, current est, hours worked, % complete, deadline
   */
   render(){
+    if (this.props.bugId !== "null") {
+      const bugs = this.props.bug['bugs_'+this.props.projectId];
+      if (!this.state.stateLoaded && bugs){
+        const bug = bugs.filter(bug => bug.id == this.props.bugId)
+        console.log("bugs: ",bugs)
+        console.log("bug: ",bug[0], this.props.bugId)
+        this.setState({bug: {...this.state.bug, ...bug[0]}, stateLoaded: true});
+      }
+    }
+
     if (this.state.redirect){
       return <Redirect to={"/projects/"+this.props.projectId} />
     }
+
     return (
       <form id="create-bug-form" onSubmit={this.submitHandler}>
         <h3 className="title">Create A New Bug</h3>
@@ -59,8 +77,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="bugName"
-            id="bugName"
+            name="bug_name"
+            id="bug_name"
+            value={this.state.bug.bug_name}
           />
         </div>
         <div className="form-box">
@@ -70,6 +89,7 @@ class CreateBugForm extends React.Component {
             type="text" 
             name="summary"
             id="summary"
+            value={this.state.bug.summary}
           />
         </div>
         <div className="form-box">
@@ -79,6 +99,7 @@ class CreateBugForm extends React.Component {
             type="text"
             name="severity"
             id="severity"
+            value={this.state.bug.severity}
           />
         </div>
         <div className="form-box">
@@ -88,6 +109,7 @@ class CreateBugForm extends React.Component {
             type="text" 
             name="status"
             id="status"
+            value={this.state.bug.status}
           />
         </div>
         <div className="form-box">
@@ -95,8 +117,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="createdBy"
-            id="createdBy"
+            name="created_by"
+            id="created_by"
+            value={this.state.bug.created_by}
           />
         </div>
         <div className="form-box">
@@ -104,8 +127,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="assignedTo"
-            id="assignedTo"
+            name="assigned_to"
+            id="assigned_to"
+            value={this.state.bug.assigned_to}
           />
         </div>
         <div className="form-box">
@@ -115,6 +139,7 @@ class CreateBugForm extends React.Component {
             type="text" 
             name="version"
             id="version"
+            value={this.state.bug.version}
           />
         </div>
         <div className="form-box">
@@ -122,8 +147,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="timeEstimate"
-            id="timeEstimate"
+            name="time_estimate"
+            id="time_estimate"
+            value={this.state.bug.time_estimate}
           />
         </div>
         <div className="form-box">
@@ -133,6 +159,7 @@ class CreateBugForm extends React.Component {
             type="text" 
             name="deadline"
             id="deadline"
+            value={this.state.bug.deadline}
           />
         </div>
         <div className="form-box">
@@ -140,8 +167,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="hoursWorked"
-            id="hoursWorked"
+            name="hours_worked"
+            id="hours_worked"
+            value={this.state.bug.hours_worked}
           />
         </div>
         <div className="form-box">
@@ -149,8 +177,9 @@ class CreateBugForm extends React.Component {
           <input className="form-input" 
             onChange={this.onChangeHandler} 
             type="text" 
-            name="percentComplete"
-            id="percentComplete"
+            name="percent_complete"
+            id="percent_complete"
+            value={this.state.bug.percent_complete}
           />
         </div>
         <div className="form-box">
@@ -166,4 +195,4 @@ const mapStateToProps = state => ({
   bug: state.bug
 })
 
-export default connect(mapStateToProps, {addBug})(CreateBugForm);
+export default connect(mapStateToProps, {addBug, getBugs})(CreateBugForm);
