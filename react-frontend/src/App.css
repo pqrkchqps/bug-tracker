@@ -16,6 +16,10 @@
   display: table-cell;
 }
 
+.project-btn {
+  margin: 0.3rem;
+}
+
 .projects-list .remove-btn {
   margin-right: 0.5rem;
   width: 100%;

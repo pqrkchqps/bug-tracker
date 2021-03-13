@@ -42,12 +42,15 @@ class ProjectsList extends Component {
               <div className="project-image-holder">
               <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
               </div>
-              <Link to={"/projects/"+id}>Project Tracker Page</Link>
+              <Link className="project-btn" to={"/projects/"+id}><Button>Project Tracker</Button></Link>
               { this.props.auth.isAuthenticated && !this.props.home ? (
-                <Button className="remove-btn" color="danger" size="sm"
-                  onClick={this.onDeleteClick.bind(this, id)}>
-                  &times;
-                </Button>
+                <React.Fragment>
+                  <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
+                  <Button className="remove-btn" color="danger" size="sm"
+                    onClick={this.onDeleteClick.bind(this, id)}>
+                    &times;
+                  </Button>
+                </React.Fragment>
               ) : null}
             </ListGroupItem>
           ))}

@@ -2,8 +2,6 @@ import { GET_BUGS, ADD_BUG, DELETE_BUG, BUGS_LOADING} from '../actions/types'
 
  const initialState = {
    loading: false,
-   projectId: null,
-   project_users: []
  }
 
 
@@ -13,9 +11,7 @@ export default function (state = initialState, action) {
       return ({
         ...state,
         ["bugs_"+action.payload.projectId]: action.payload.bugs.reverse(),
-        loading: false,
-        projectId: action.payload.projectId,
-        project_users: action.payload.project_users,
+        loading: false
       })
     case DELETE_BUG:
       return ({
@@ -31,9 +27,7 @@ export default function (state = initialState, action) {
     case BUGS_LOADING:
       return {
         ...state,
-        loading: true,
-        projectId: null,
-        project_users: [],
+        loading: true
       }
     default:
       return state;

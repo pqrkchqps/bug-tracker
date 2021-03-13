@@ -16,6 +16,7 @@ app.use('/api/users', require('./routes/api/users'))
 app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/bugs', require('./routes/api/bugs'))
 app.use('/api/projects', require('./routes/api/projects'))
+app.use('/api/project_users', require('./routes/api/project_users'))
 app.get('/*', function(req, res) {
   res.sendFile(publicPath+"/index.html", (err) =>{
     if (err) {

@@ -30,13 +30,13 @@ class ProjectTracker extends Component {
   }
 
   render() {
-    const {isAuthenticated, project_users, user_id} = this.props;
+    const {isAuthenticated, projectUsers, userId} = this.props;
 
     return (
       <div>
         <Header />
         {
-          isAuthenticated && project_users.includes(user_id) ? (
+          isAuthenticated && projectUsers.includes(userId) ? (
             <Container>
               <Button ><Link to={"/projects/"+this.props.match.params.id+"/add/null"}>Add Bug</Link></Button>
             </Container>
@@ -50,8 +50,8 @@ class ProjectTracker extends Component {
 
 const mapStateToProps= state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  project_users: state.bug.project_users,
-  user_id: state.auth.user ? state.auth.user.id : null
+  projectUsers: state.project_users.projectUsers,
+  userId: state.auth.user ? state.auth.user.id : null
 });
 
 export default connect(mapStateToProps, {logout})(ProjectTracker)

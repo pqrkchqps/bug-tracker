@@ -51,4 +51,15 @@ router.post('/', (req, res) => {
   })
 });
 
+router.get("/", (req, res) => {
+  console.log("get /api/users reached");
+
+  console.log("checking database for users");
+  db.any('SELECT * FROM users')
+  .then(users => {
+    console.log("get users:", users)
+    res.json(users)
+  })
+})
+
  module.exports = router;

@@ -7,16 +7,11 @@ router.get('/:projectId', (req, res) => {
   db.any('SELECT * from bugs_'+req.params.projectId)
   .then(bugs => {
     console.log(bugs)
-    db.any('SELECT user_id from projects_users WHERE project_id = $1', [req.params.projectId])
-    .then(project_users => {
-      console.log("project users:", project_users)
-      var project_users_array = project_users.map(i => i.user_id)
-      res.json({bugs, project_users: project_users_array});
-    })
-    .catch(error => {
-      console.log(error)
-      return res.status(500).json({msg: "Database error in looking up users"})
-    })
+    res.json(bugs);
+  })
+  .catch(error => {
+    console.log(error)
+    return res.status(500).json({msg: "Database error in looking up users"})
   })
 })
 
@@ -55,7 +50,7 @@ router.post('/:projectId', auth, (req, res) => {
     console.log("values:", values)
     db.one(insertString, values)
     .then( newBug => {
-      console.log("newbug:",newbug)
+      console.log("newbug:",newBug)
       res.json(newBug);
     })
     .catch(error => {
@@ -86,13 +81,6 @@ router.delete('/:id/:projectId', auth, (req, res) => {
   })
 })
 
-
-router.delete('/:id', auth, (req, res) => {
-  db.none('DELETE from bugs WHERE id = '+req.params.id)
-  .then(t =>{
-    res.send(`Deleted bug with id=${req.params.id}`);
-  }).catch(error => res.status(404).send('bug id not found'))
-})
 
 
 module.exports = router
