@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import {logout} from '../actions/authActions'
 import {
   Button,
-  Alert,
+  UncontrolledAlert,
   Container
 } from 'reactstrap'
 
@@ -37,7 +37,7 @@ class UserProjects extends Component {
       <div>
         <Header />
         <Container>
-          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+          {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
           { isAuthenticated ? <Button ><Link to="/projects/add">Add Project</Link></Button> : null }
         </Container>
         <ProjectsList />

@@ -7,8 +7,7 @@ import PropTypes from 'prop-types';
 import { register } from '../actions/authActions'
 import { clearErrors } from '../actions/errorActions'
 import {
-  FormGroup,
-  Alert
+  UncontrolledAlert
 } from 'reactstrap';
 
 
@@ -63,7 +62,7 @@ class Signup extends Component {
         <Header />
         <Card>
           <Logo src={logoImg} />
-          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+          {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
               <Form>
                 <Input
                   type="text"

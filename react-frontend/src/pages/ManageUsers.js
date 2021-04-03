@@ -7,14 +7,7 @@ import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
 import {logout} from '../actions/authActions'
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavLink,
-  NavItem,
-  Alert,
+  UncontrolledAlert,
   Container
 } from 'reactstrap'
 import ReactSearchBox from 'react-search-box'
@@ -48,7 +41,8 @@ class ManageUsers extends Component {
     console.log(this.props)
     const projectId = this.props.match.params.projectId;
     let {isAuthenticated, projectUsers, userId, users} = this.props;
-    projectUsers = projectUsers.map(i => i.id)
+    let currentProjectUser = projectUsers.filter(i => i.id === userId)
+    currentProjectUser = currentProjectUser.length > 0 ? currentProjectUser[0] : currentProjectUser
     users = users.map(i => { return {key: i.name, value: i.email, id: i.id}})
     
 
@@ -56,9 +50,9 @@ class ManageUsers extends Component {
       <div>
         <Header />
           <Container>
-            {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+            {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
             {
-              isAuthenticated && projectUsers.includes(userId) ? (
+              isAuthenticated && currentProjectUser.add_users ? (
                 <ReactSearchBox
                   placeholder="type user's name to add"
                   data={users}

@@ -7,13 +7,6 @@ import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
 import {logout} from '../actions/authActions'
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavLink,
-  NavItem,
   Container
 } from 'reactstrap'
 

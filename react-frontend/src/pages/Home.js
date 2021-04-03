@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
 import {logout} from '../actions/authActions'
 import {
-  Alert
+  UncontrolledAlert
 } from 'reactstrap'
 
 class Home extends Component {
@@ -17,7 +17,7 @@ class Home extends Component {
       msg: null
     }
   }
-  
+
   onClickLogout = () => {
     this.props.logout()
   }
@@ -33,7 +33,7 @@ class Home extends Component {
      return (
       <div>
         <Header />                                    
-        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+        {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
         <ProjectsList home="true"/>
       </div>
     );

@@ -10,17 +10,11 @@ import {logout} from '../actions/authActions'
 import {getProjectUsers} from '../actions/projectUsersActions'
 
 import {
-  Alert,
+  UncontrolledAlert,
   Container
 } from 'reactstrap'
 
 class ProjectTracker extends Component {
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    project_users: PropTypes.array,
-    user_id: PropTypes.number
-  }
-
   state = {
     msg: null
   }
@@ -32,6 +26,7 @@ class ProjectTracker extends Component {
   componentDidMount () {
     this.props.getProjectUsers(this.props.match.params.id);
   }
+
   componentDidUpdate(prevProps){
     const { error, isAuthenticated } = this.props;
     if(error !== prevProps.error){
@@ -48,7 +43,7 @@ class ProjectTracker extends Component {
       <div>
         <Header />
         <Container>
-        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+        {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
         {
           isAuthenticated && currentProjectUser.add_bugs ? (
             <Button ><Link to={"/projects/"+this.props.match.params.id+"/add/null"}>Add Bug</Link></Button>    

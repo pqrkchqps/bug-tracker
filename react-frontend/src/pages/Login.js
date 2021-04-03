@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom';
 import { Card, Logo, Form, Input, Button } from '../components/AuthForms';
-import { Alert } from 'reactstrap';
+import { UncontrolledAlert } from 'reactstrap';
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -60,7 +60,7 @@ class Login extends Component {
       <div>
         <Header />
         <Card>
-          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+          {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
           <Logo src={logoImg} />
           <Form>
             <Input
