@@ -1,5 +1,6 @@
 export const GET_BUGS = "GET_BUGS"
 export const ADD_BUG = "ADD_BUG"
+export const EDIT_BUG = "EDIT_BUG"
 export const DELETE_BUG = "DELETE_BUG"
 export const BUGS_LOADING = "BUGS_LOADING"
 export const USER_LOADING = "USER_LOADING"
@@ -22,4 +23,6 @@ export const DELETE_PROJECT_USER = "DELETE_PROJECT_USER"
 export const PROJECT_USERS_LOADING = "PROJECT_USERS_LOADING"
 export const USERS_LOADING = "USERS_LOADING"
 export const GET_ALL_USERS = "GET_ALL_USERS"
+export const UPDATE_PROJECT_USERS = "UPDATE_PROJECT_USERS"
+
 

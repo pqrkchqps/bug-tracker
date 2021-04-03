@@ -1,4 +1,4 @@
-import { GET_BUGS, ADD_BUG, DELETE_BUG, BUGS_LOADING} from '../actions/types'
+import { GET_BUGS, ADD_BUG, DELETE_BUG, BUGS_LOADING, EDIT_BUG} from '../actions/types'
 
  const initialState = {
    loading: false,
@@ -19,6 +19,7 @@ export default function (state = initialState, action) {
         ["bugs_"+action.payload.projectId]:
             state["bugs_"+action.payload.projectId].filter(bug => bug.id !== action.payload.id)
       })
+    case EDIT_BUG:
     case ADD_BUG:
       return {
         ...state,

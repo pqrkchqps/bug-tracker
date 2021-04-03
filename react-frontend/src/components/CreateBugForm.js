@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom';
-import {addBug, getBugs} from '../actions/bugActions'
+import {addBug, getBugs, editBug} from '../actions/bugActions'
 
 class CreateBugForm extends React.Component {
   constructor(props){
@@ -40,7 +40,11 @@ class CreateBugForm extends React.Component {
     e.preventDefault();
     const bug = this.state.bug;
     console.log(this.props, bug);
-    this.props.addBug(bug, this.props.projectId);
+    if (this.props.bugId !== "null") {
+      this.props.editBug(bug, this.props.projectId);
+    } else {
+      this.props.addBug(bug, this.props.projectId);
+    }
     this.setState({redirect: true})
   }
   /*
@@ -195,4 +199,4 @@ const mapStateToProps = state => ({
   bug: state.bug
 })
 
-export default connect(mapStateToProps, {addBug, getBugs})(CreateBugForm);
+export default connect(mapStateToProps, {addBug, editBug, getBugs})(CreateBugForm);

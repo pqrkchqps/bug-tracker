@@ -7,10 +7,7 @@ import PropTypes from 'prop-types'
 import {logout} from '../actions/authActions'
 import {
   Button,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
+  Alert,
   Container
 } from 'reactstrap'
 
@@ -18,11 +15,15 @@ class UserProjects extends Component {
   constructor(props){
     super(props)
     this.state = {
-      isRedirect: false
+      msg: null
     }
   }
-  static propTypes = {
-    auth: PropTypes.object.isRequired
+  
+  componentDidUpdate(prevProps){
+    const { error, isAuthenticated } = this.props;
+    if(error !== prevProps.error){
+      this.setState({msg: error.msg})
+    }
   }
 
   onClickLogout = () => {
@@ -30,16 +31,15 @@ class UserProjects extends Component {
   }
 
   render() {
+    const {isAuthenticated} = this.props;
+    
     return (
       <div>
         <Header />
-        {
-          this.props.auth.isAuthenticated ?
-            <Container>
-              <Button ><Link to="/projects/add">Add Project</Link></Button>
-            </Container>
-            : null
-        }
+        <Container>
+          {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+          { isAuthenticated ? <Button ><Link to="/projects/add">Add Project</Link></Button> : null }
+        </Container>
         <ProjectsList />
       </div>
     );
@@ -47,7 +47,8 @@ class UserProjects extends Component {
 }
 
 const mapStateToProps= state => ({
-  auth: state.auth
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error
 });
 
 export default connect(mapStateToProps, {logout})(UserProjects)

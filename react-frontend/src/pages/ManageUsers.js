@@ -14,6 +14,7 @@ import {
   Nav,
   NavLink,
   NavItem,
+  Alert,
   Container
 } from 'reactstrap'
 import ReactSearchBox from 'react-search-box'
@@ -27,9 +28,19 @@ class ManageUsers extends Component {
     project_users: PropTypes.array,
     user_id: PropTypes.number
   }
+  state = {
+    msg: null
+  }
 
   componentDidMount () {
     this.props.getAllUsers();
+  }
+
+  componentDidUpdate(prevProps){
+    const { error, isAuthenticated } = this.props;
+    if(error !== prevProps.error){
+      this.setState({msg: error.msg})
+    }
   }
 
 
@@ -44,19 +55,20 @@ class ManageUsers extends Component {
     return (
       <div>
         <Header />
-        {
-          isAuthenticated && projectUsers.includes(userId) ? (
-            <Container>
-              <ReactSearchBox
-                placeholder="type user's name to add"
-                data={users}
-                onSelect={u => {
-                  this.props.addProjectUser(u.id, projectId)
-                }}
-                />
-            </Container>
-            ) : null
-        }
+          <Container>
+            {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+            {
+              isAuthenticated && projectUsers.includes(userId) ? (
+                <ReactSearchBox
+                  placeholder="type user's name to add"
+                  data={users}
+                  onSelect={u => {
+                    this.props.addProjectUser(u.id, projectId)
+                  }}
+                  />
+                ) : null
+            }
+          </Container>
         <ProjectUsersList projectId={projectId} />
       </div>
     );
@@ -67,7 +79,8 @@ const mapStateToProps= state => ({
   isAuthenticated: state.auth.isAuthenticated,
   projectUsers: state.project_users.projectUsers,
   userId: state.auth.user ? state.auth.user.id : null,
-  users: state.user.users
+  users: state.user.users,
+  error: state.error
 });
 
 export default connect(mapStateToProps, {getAllUsers, addProjectUser})(ManageUsers)

@@ -7,29 +7,33 @@ import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
 import {logout} from '../actions/authActions'
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavLink,
-  NavItem,
-  Container
+  Alert
 } from 'reactstrap'
 
 class Home extends Component {
-  static propTypes = {
-    auth: PropTypes.object.isRequired
+  constructor(props){
+    super(props)
+    this.state = {
+      msg: null
+    }
   }
-
+  
   onClickLogout = () => {
     this.props.logout()
+  }
+
+  componentDidUpdate(prevProps){
+    const { error } = this.props;
+    if(error !== prevProps.error){
+      this.setState({msg: error.msg})
+    }
   }
 
   render() {
      return (
       <div>
-        <Header />
+        <Header />                                    
+        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
         <ProjectsList home="true"/>
       </div>
     );
@@ -37,7 +41,7 @@ class Home extends Component {
 }
 
 const mapStateToProps= state => ({
-  auth: state.auth
+  error: state.error
 });
 
 export default connect(mapStateToProps, {logout})(Home)

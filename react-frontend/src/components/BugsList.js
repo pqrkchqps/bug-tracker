@@ -4,7 +4,6 @@ import { Link} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getBugs, deleteBug} from '../actions/bugActions'
-import {getProjectUsers} from '../actions/projectUsersActions'
 import PropTypes from 'prop-types'
 
 class BugsList extends Component {
@@ -16,8 +15,6 @@ class BugsList extends Component {
   }
 
   componentDidMount(){
-    this.props.getProjectUsers(this.props.projectId);
-
     this.props.getBugs(this.props.projectId);
   }
 
@@ -27,9 +24,9 @@ class BugsList extends Component {
 
   render() {
     let {isAuthenticated, projectUsers, userId, projectId} = this.props;
-    projectUsers = projectUsers.map(i => i.id)
+    let currentProjectUser = projectUsers.filter(i => i.id === userId)[0]
     let bugs = this.props.bug['bugs_'+projectId];
-    console.log("projectUsers:", projectUsers)
+    console.log("currentProjectUser:",currentProjectUser)
     console.log("userId:", userId);
     if (bugs === undefined) bugs = [];
     return (
@@ -44,21 +41,21 @@ class BugsList extends Component {
                 <Col md="1" className="remove-btn">Remove</Col>
               </Row>
             </ListGroupItem>
-            {bugs.map(({bug_name, summary, id}) => (
+            {bugs.map(({bug_name, summary, id, created_by_id}) => (
               <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
                   <Row>
                     <Col md="3" className="bug-name">{bug_name}</Col>
                     <Col md="7" className="bug-summary">{summary}</Col>
                     <Col md="1" className="edit-btn">
-                      { isAuthenticated && projectUsers.includes(userId) ? (
+                      { isAuthenticated && currentProjectUser && (currentProjectUser.edit_bugs || (currentProjectUser.edit_own_bugs && created_by_id === userId)) ? (
                         <Link to={"/projects/"+projectId+"/add/"+id}>
                           <Button className="edit-btn" color="info" >&times;</Button>
                         </Link>
                       ) : null}
                     </Col>
                     <Col md="1" className="remove-btn">
-                      { isAuthenticated && projectUsers.includes(userId) ? (
+                      { isAuthenticated && currentProjectUser && currentProjectUser.remove_bugs ? (
                         <Button className="remove-btn" color="danger"
                           onClick={this.onDeleteClick.bind(this, id)}>
                           &times;
@@ -91,4 +88,4 @@ const mapStateToProps = state => ({
   userId: state.auth.user ? state.auth.user.id : null
 })
 
-export default connect(mapStateToProps, {getBugs, deleteBug, getProjectUsers})(BugsList)
+export default connect(mapStateToProps, {getBugs, deleteBug})(BugsList)

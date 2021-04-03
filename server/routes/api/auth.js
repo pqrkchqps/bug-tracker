@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
         {expiresIn: 3600},
 
         (err, token) => {
-          if(err) throw err;
+          if(err) console.log(err);
           res.json({
             token,
             user: {

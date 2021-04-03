@@ -33,12 +33,7 @@ class Signup extends Component {
   componentDidUpdate(prevProps) {
     const { error } = this.props;
     if(error !== prevProps.error){
-      //Check for register error
-      if (error.id === 'REGISTER_FAIL') {
-        this.setState({msg: error.msg.msg})
-      } else {
-        this.setState({msg: null})
-      }
+      this.setState({msg: null})
     }
   }
 

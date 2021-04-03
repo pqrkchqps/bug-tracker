@@ -13,7 +13,7 @@ class ProjectsList extends Component {
   }
 
   componentDidMount(){
-    const {user, isAuthenticated} = this.props.auth;
+    const {isAuthenticated} = this.props;
     console.log(this.props.home)
     if (!this.props.home && isAuthenticated){
       this.props.getUserProjects();
@@ -27,12 +27,12 @@ class ProjectsList extends Component {
     this.props.deleteProject(id);
   }
 
-  onTrackerClick = (id) => {
-    this.props.deleteProject(id);
-  }
   render() {
-    const {projects} = this.props.project
-    console.log(projects);
+    const {projects} = this.props.project;
+    const {isAuthenticated, projectUsers, userId} = this.props;
+    let currentProjectUser = projectUsers.filter(i => i.id === userId)
+    currentProjectUser = currentProjectUser.length > 0 ? currentProjectUser[0] : currentProjectUser
+
     return (
       <Container>
         <ListGroup className="projects-list">
@@ -43,13 +43,17 @@ class ProjectsList extends Component {
               <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
               </div>
               <Link className="project-btn" to={"/projects/"+id}><Button>Project Tracker</Button></Link>
-              { this.props.auth.isAuthenticated && !this.props.home ? (
+              { isAuthenticated && !this.props.home ? (
                 <React.Fragment>
-                  <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
-                  <Button className="remove-btn" color="danger" size="sm"
+                  {currentProjectUser.add_users || currentProjectUser.remove_users || currentProjectUser.edit_users || currentProjectUser.edit_own_users ? (
+                    <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
+                  ) : null }
+                  {currentProjectUser.delete_project ? (
+                    <Button className="remove-btn" color="danger" size="sm"
                     onClick={this.onDeleteClick.bind(this, id)}>
                     &times;
                   </Button>
+                  ) : null }
                 </React.Fragment>
               ) : null}
             </ListGroupItem>
@@ -60,16 +64,11 @@ class ProjectsList extends Component {
   }
 }
 
-ProjectsList.propTypes = {
-  getAllProjects: PropTypes.func.isRequired,
-  getUserProjects: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
-}
-
 const mapStateToProps = state => ({
   project: state.project,
-  auth: state.auth
+  isAuthenticated: state.auth.isAuthenticated,
+  projectUsers: state.project_users.projectUsers,
+  userId: state.auth.user ? state.auth.user.id : null
 })
 
 export default connect(mapStateToProps, {getAllProjects, getUserProjects, deleteProject})(ProjectsList)
