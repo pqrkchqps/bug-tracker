@@ -1,0 +1,16 @@
+.bug-list.list-group {
+    display: table;
+    width: 100%;
+  }
+  
+  .bug-name {
+    display: table-cell;
+  }
+  
+  .bug-summary {
+    display: table-cell;
+  }
+  
+  .bugs-list .remove-btn {  
+    display: table-cell;
+  }

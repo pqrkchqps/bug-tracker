@@ -33,7 +33,6 @@ class ProjectUsersList extends Component {
   onSaveClick = () => {
     console.log(this.state.projectUsersEdits)
     this.props.updateProjectUsers(this.state.projectUsersEdits, this.props.projectId)
-    //window.location.reload();
   }
 
   isPermissionDisabledOnCurrentProjectUserWithCreatedBy = (permisssionName, currentProjectUser, created_by_id) => {
@@ -211,13 +210,6 @@ class ProjectUsersList extends Component {
   }
 }
 
-ProjectUsersList.propTypes = {
-  getProjectUsers: PropTypes.func.isRequired,
-  bug: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool,
-  projectUsers: PropTypes.array,
-  userId: PropTypes.number
-}
 
 const mapStateToProps = state => ({
   bug: state.bug,

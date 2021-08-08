@@ -1,1 +1,33 @@
-@import './components/CreateBugForm'
+@import './components/BugList';
+@import './components/Button';
+@import './components/CreateBugForm';
+@import './components/Fade';
+@import './components/Header';
+@import './components/ProjectList';
+@import './colors.scss';
+
+a:hover, .bright-button:hover {
+    color: map-get($theme-colors, bright-light);
+    text-decoration: none;
+}
+
+a, .bright-button {
+    color: map-get($theme-colors, bright-dark);
+}
+
+body, textarea, input, select {
+    color: map-get($theme-colors, secondary-dark);
+    background-color: map-get($theme-colors, primary); 
+    font-family: quicksand;
+}
+
+textarea:hover, textarea:focus, input:hover, input:focus, select:hover, select:focus{
+    outline: none;
+    border-color: map-get($theme-colors, bright-light);
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}

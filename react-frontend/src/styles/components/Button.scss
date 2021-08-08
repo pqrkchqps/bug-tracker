@@ -1,0 +1,12 @@
+@import '../colors.scss';
+
+.btn-secondary:hover, .btn-secondary:hover a {
+    color: map-get($theme-colors, bright-light) !important;
+    border-color: map-get($theme-colors, bright-light) !important;
+}
+
+.btn-secondary, .btn-secondary a {
+    background-color: map-get($theme-colors, secondary-dark) !important;
+    color: map-get($theme-colors, secondary-light) !important;
+    border-color: map-get($theme-colors, bright-dark) !important;
+}

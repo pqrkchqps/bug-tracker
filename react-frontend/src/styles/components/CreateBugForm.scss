@@ -1,28 +1,119 @@
-
+@import '../colors.scss';
 
 #create-bug-form{
-  margin: auto;
   padding:20px;
   padding-bottom: 100px;
-  width: 400px;
-  background-color: blue;
-  color: white;
+  width: 100%;
+  background-color: map-get($theme-colors, secondary-light);
+  color: map-get($theme-colors, secondary-dark);
+  display:flex;
+  flex-direction: column;
 }
 
-#create-bug-form .form-input{
+#bug_name{
+  flex: 5;
+  height: 50px;
+  font-size: 25px;
+  resize: none;
+  background-color: map-get($theme-colors, secondary-light);
+  border-color : map-get($theme-colors, secondary-light);
+}
+
+#summary{
+  flex: 5;
+  font-size: 15px;
+  overflow: auto;
+  resize: none;
+  width: 100%;
+  background-color: map-get($theme-colors, secondary-light);
+  border-color : map-get($theme-colors, secondary-light);
+}
+
+#bug_name:hover, #bug_name:focus{
+  outline: none;
+  border-color: map-get($theme-colors, bright-light);
+  background-color: map-get($theme-colors, primary);
+}
+
+
+.title-top-container{
+  display: flex;
+  width: 100%;
+}
+
+.title-top-buttons{
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.title-top-button{
   display: block;
-  margin: auto;
+  height: 50px;
 }
 
-#create-bug-form .form-label{
+.form-input{
   display: block;
-  margin: auto;
 }
 
-#create-bug-form .form-box{
-  margin: 20px;
+.form-label{
+  display: block;
 }
 
-#create-bug-form .title{
-  color:black
+.form-label-header{
+  display: block;
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.form-box{
+  padding: 20px 10px 20px 10px;
+  margin: 10px;
+  background-color: map-get($theme-colors, primary);
+}
+
+.hide-show-button{
+  margin: 5px;
+}
+
+.bug-info-label{
+  width: 13vw;
+}
+
+.bug-info-input{
+  width: calc(100% - 13vw);
+  border: none;
+}
+
+.bug-info-input:hover {
+  background-color: map-get($theme-colors, bright-white);
+}
+
+.bug-info-container{
+  width: 50%;
+  padding: 10px;
+}
+
+.bug-info-input .MuiInput-underline:before,  
+.bug-info-input .MuiInput-underline:hover:not(.Mui-disabled):before,
+.bug-info-input .MuiInput-underline:after{
+  border: none;
+}
+
+.bug-info-container:hover, .bug-info-container:focus{
+  border-bottom: solid;
+  border-bottom-width: 1px;
+  border-color: map-get($theme-colors, bright-light);
+}
+
+.detail-title-sticky{
+  background-color: map-get($theme-colors, secondary-light);
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+#create-bug-form .alert {
+  text-align: center;
 }

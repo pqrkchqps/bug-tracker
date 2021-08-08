@@ -1,0 +1,17 @@
+$theme-colors: (
+  'primary': #edf2f4,
+  'secondary-dark': #2b2d42,
+  'secondary-light': #8d99ae,
+  'bright-light': #ef233c,
+  'bright-dark': #d90429,
+  'bright-white': #ffe9ec
+);
+
+:export {
+  primary: #edf2f4;
+  secondaryDark: #2b2d42;
+  secondaryLight: #8d99ae;
+  brightLight: #ef233c;
+  brightDark: #d90429;
+  brightWhite: #ffe9ec;
+}

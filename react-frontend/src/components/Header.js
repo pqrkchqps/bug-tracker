@@ -35,10 +35,10 @@ class Header extends Component {
           </span>
         </NavItem>
         <NavItem>
-          <Button onClick={this.onClickLogout}>Logout</Button>
+          <Button><Link to="/projects">Your Projects</Link></Button>
         </NavItem>
         <NavItem>
-          <Link to="/projects">Your Projects</Link>
+          <Button onClick={this.onClickLogout}>Logout</Button>
         </NavItem>
       </Fragment>
     )
@@ -52,7 +52,7 @@ class Header extends Component {
     )
 
     return (
-        <Navbar color="dark" dark expand="sm" className="mb-5">
+        <Navbar color="dark" dark expand="sm" className="mb-3">
             <Container>
             <NavbarBrand href="/">Dreamer Assist</NavbarBrand>
             <Nav className="ml-auto" navbar>

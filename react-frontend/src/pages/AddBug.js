@@ -20,20 +20,17 @@ class AddBug extends Component {
   }
 
   render() {
+    const projectId = this.props.match.params.projectId;
+    const bugId = this.props.match.params.bugId;
     return (
       <div>
         <Header />
         <Container>
-          <Button >
-            <Link to={"/projects/"+this.props.match.params.projectId}>
-              Return To Project Tracker
-            </Link>
-          </Button>
+          <CreateBugForm 
+            projectId={projectId} 
+            bugId={bugId}
+          />
         </Container>
-        <CreateBugForm 
-          projectId={this.props.match.params.projectId} 
-          bugId={this.props.match.params.bugId}
-        />
       </div>
     );
   }

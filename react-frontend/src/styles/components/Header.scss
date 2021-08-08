@@ -1,0 +1,17 @@
+@import '../colors.scss';
+@import '../fonts.scss';
+
+.navbar-brand:hover {
+    color: map-get($theme-colors, bright-light) !important;
+}
+
+.navbar-text, .navbar-dark, .navbar-brand{
+    background-color: map-get($theme-colors, secondary-light) !important;
+    color: map-get($theme-colors, secondary-dark) !important;
+}
+
+.navbar-brand{
+    font-family: cloudy;
+    font-size: 3em;
+}
+

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import CreateBugForm from '../components/CreateBugForm'
-import BugsList from '../components/BugsList'
+import BugsList from '../components/BugsList.js'
 import Header from '../components/Header'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -35,20 +35,11 @@ class ProjectTracker extends Component {
   }
 
   render() {
-    const {isAuthenticated, projectUsers, userId} = this.props;
-    let currentProjectUser = projectUsers.filter(i => i.id === userId)
-    currentProjectUser = currentProjectUser.length > 0 ? currentProjectUser[0] : currentProjectUser
-    console.log(currentProjectUser)
     return (
       <div>
         <Header />
         <Container>
         {this.state.msg ? <UncontrolledAlert color="danger">{this.state.msg}</UncontrolledAlert> : null}
-        {
-          isAuthenticated && currentProjectUser.add_bugs ? (
-            <Button ><Link to={"/projects/"+this.props.match.params.id+"/add/null"}>Add Bug</Link></Button>    
-            ) : null
-        }
         </Container>
         <BugsList projectId={this.props.match.params.id} />
       </div>
