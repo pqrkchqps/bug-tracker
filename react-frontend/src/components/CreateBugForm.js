@@ -114,12 +114,12 @@ class CreateBugForm extends React.Component {
   */
   render(){
     const lastAddedBug = this.props.bug.lastAddedBug;
-    const bugs = this.props.bug['bugs_'+this.props.projectId];
-    if (this.props.bugId !== "null" && !this.state.stateLoaded && bugs){
-      const bug = bugs.filter(bug => bug.id == this.props.bugId)
-      console.log("bugs: ",bugs)
-      console.log("bug: ",bug[0], this.props.bugId)
-      this.setState({bug: {...this.state.bug, ...bug[0]}, stateLoaded: true});
+    const bugs = this.props.bug['bugs_'+this.props.projectId] || [];
+    let bug = bugs.filter(bug => bug.id == this.props.bugId);
+    bug = bug.length ? bug[0] : null;
+
+    if (this.props.bugId !== "null" && !this.state.stateLoaded && bug){
+      this.setState({bug: {...this.state.bug, ...bug}, stateLoaded: true});
     } else if (this.state.bug.id === "null" && this.state.isBugAdded && lastAddedBug !== null) {
       this.setState({bug: {...this.state.bug, id: lastAddedBug.id, created_by: lastAddedBug.created_by}, stateLoaded: true, isBugAdded: false});
     }
@@ -281,8 +281,8 @@ class CreateBugForm extends React.Component {
         </div>
         <div className="form-box">
           <label className="form-label">Percent Complete</label>
-          <Progress value={this.state.bug.percent_complete}>
-            {this.state.bug.percent_complete}
+          <Progress value={bug && bug.percent_complete}>
+            {bug && bug.percent_complete}
           </Progress>
         </div>
       </form>
