@@ -6,18 +6,18 @@ const db = require('../../db/db')
 
 router.get('/for_user', auth, (req, res) => {
   db.any('SELECT * FROM projects_users WHERE user_id = $1', req.user.id)
-  .then(userProjects => {
-    if (userProjects.length === 0) return res.json([])
-    //console.log(userProjects)
+  .then(userPermissions => {
+    if (userPermissions.length === 0) return res.json([])
+    //console.log(userPermissions)
     let db_string = 'SELECT * FROM projects WHERE id IN ( '
-    userProjects.forEach(up => {
+    userPermissions.forEach(up => {
       db_string +=up.project_id +","
     })
     db_string = db_string.slice(0, -1) + ")";
     //console.log(db_string)
     db.any(db_string)
     .then(projects => {
-      res.json(projects);
+      res.json({projects, userPermissions});
     })
     .catch(error => {
       console.log(error);

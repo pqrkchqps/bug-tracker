@@ -5,6 +5,7 @@ import {Image} from 'cloudinary-react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getAllProjects, getUserProjects, deleteProject} from '../actions/projectActions'
+import { getProjectUsers } from '../actions/projectUsersActions';
 import PropTypes from 'prop-types'
 
 class ProjectsList extends Component {
@@ -14,7 +15,7 @@ class ProjectsList extends Component {
 
   componentDidMount(){
     const {isAuthenticated} = this.props;
-    console.log(this.props.home)
+
     if (!this.props.home && isAuthenticated){
       this.props.getUserProjects();
     }
@@ -28,36 +29,39 @@ class ProjectsList extends Component {
   }
 
   render() {
-    const {projects} = this.props.project;
-    const {isAuthenticated, projectUsers, userId} = this.props;
-    let currentProjectUser = projectUsers.filter(i => i.id === userId)
-    currentProjectUser = currentProjectUser.length > 0 ? currentProjectUser[0] : currentProjectUser
+    const {projects, userPermissions} = this.props.project;
+    const {isAuthenticated} = this.props;
+    console.log("eee",userPermissions)
 
     return (
       <Container>
         <ListGroup className="projects-list">
-          {projects.map(({name, id, image_name}) => (
-            <ListGroupItem key={id} className="project-block">
-              <h1 className="project-name">{name}</h1>
-              <div className="project-image-holder">
-              <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
-              </div>
-              <Link className="project-btn" to={"/projects/"+id}><Button>Project Tracker</Button></Link>
-              { isAuthenticated && !this.props.home ? (
-                <React.Fragment>
-                  {currentProjectUser.add_users || currentProjectUser.remove_users || currentProjectUser.edit_users || currentProjectUser.edit_own_users ? (
-                    <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
-                  ) : null }
-                  {currentProjectUser.delete_project ? (
-                    <Button className="remove-btn" color="danger" size="sm"
-                    onClick={this.onDeleteClick.bind(this, id)}>
-                    &times;
-                  </Button>
-                  ) : null }
-                </React.Fragment>
-              ) : null}
-            </ListGroupItem>
-          ))}
+          {projects.map(({name, id, image_name}) => {
+            let projectUserPermissions = userPermissions.filter(projectUser => projectUser.project_id === id)
+            projectUserPermissions = projectUserPermissions.length !== 0 ? projectUserPermissions[0] : null;
+
+            return (
+              <ListGroupItem key={id} className="project-block">
+                <h1 className="project-name">{name}</h1>
+                <div className="project-image-holder">
+                <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
+                </div>
+                <Link className="project-btn" to={"/projects/"+id}><Button>Project Tracker</Button></Link>
+                { isAuthenticated && !this.props.home ? (
+                  <React.Fragment>
+                    {projectUserPermissions && (projectUserPermissions.add_users || projectUserPermissions.remove_users || projectUserPermissions.edit_users || projectUserPermissions.edit_own_users) ? (
+                      <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
+                    ) : null }
+                    {projectUserPermissions && projectUserPermissions.delete_project ? (
+                      <Button className="remove-btn" color="danger" size="sm"
+                      onClick={this.onDeleteClick.bind(this, id)}>
+                      &times;
+                    </Button>
+                    ) : null }
+                  </React.Fragment>
+                ) : null}
+              </ListGroupItem>
+          )})}
         </ListGroup>
       </Container>
     );
@@ -67,8 +71,7 @@ class ProjectsList extends Component {
 const mapStateToProps = state => ({
   project: state.project,
   isAuthenticated: state.auth.isAuthenticated,
-  projectUsers: state.project_users.projectUsers,
-  userId: state.auth.user ? state.auth.user.id : null
+  projectUsers: state.project_users.projectUsers
 })
 
-export default connect(mapStateToProps, {getAllProjects, getUserProjects, deleteProject})(ProjectsList)
+export default connect(mapStateToProps, {getAllProjects, getUserProjects, deleteProject, getProjectUsers})(ProjectsList)

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from './types'
+import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from './types'
 import {tokenConfig} from './authActions'
 import {returnErrors} from './errorActions'
 
@@ -8,7 +8,7 @@ export const getUserProjects = () => (dispatch, getState) => {
   axios.get('/api/projects/for_user', tokenConfig(getState))
   .then(res => {
     dispatch({
-      type: GET_PROJECTS,
+      type: GET_USER_PROJECTS,
       payload: res.data
     })
   }).catch(err => {
@@ -21,7 +21,7 @@ export const getAllProjects = () => (dispatch) => {
   axios.get('/api/projects')
   .then(res => {
     dispatch({
-      type: GET_PROJECTS,
+      type: GET_ALL_PROJECTS,
       payload: res.data
     })
   }).catch(err => {

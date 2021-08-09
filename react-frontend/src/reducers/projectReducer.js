@@ -1,17 +1,27 @@
-import { GET_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from '../actions/types'
+import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from '../actions/types'
 
  const initialState = {
    projects: [],
-   loading: false
+   loading: false,
+   userPermissions: []
  }
 
 
 export default function (state = initialState, action) {
+  console.log(action)
   switch (action.type){
-    case GET_PROJECTS:
+    case GET_ALL_PROJECTS:
       return ({
         ...state,
         projects: action.payload.reverse(),
+        userPermissions: [],
+        loading: false
+      })
+    case GET_USER_PROJECTS:
+      return ({
+        ...state,
+        projects: action.payload.projects.reverse(),
+        userPermissions: action.payload.userPermissions,
         loading: false
       })
     case DELETE_PROJECT:

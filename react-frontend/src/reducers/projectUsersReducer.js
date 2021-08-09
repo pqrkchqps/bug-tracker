@@ -8,7 +8,6 @@ import { GET_PROJECT_USERS, ADD_PROJECT_USER, DELETE_PROJECT_USER, PROJECT_USERS
 
 
 export default function (state = initialState, action) {
-  console.log(action)
   switch (action.type){
     case GET_PROJECT_USERS:
       return ({
