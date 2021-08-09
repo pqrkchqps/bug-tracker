@@ -116,7 +116,7 @@ class CreateBugForm extends React.Component {
     const lastAddedBug = this.props.bug.lastAddedBug;
     const bugs = this.props.bug['bugs_'+this.props.projectId] || [];
     let bug = bugs.filter(bug => bug.id == this.props.bugId);
-    bug = bug.length ? bug[0] : null;
+    bug = bug.length !== 0 ? bug[0] : null;
 
     if (this.props.bugId !== "null" && !this.state.stateLoaded && bug){
       this.setState({bug: {...this.state.bug, ...bug}, stateLoaded: true});

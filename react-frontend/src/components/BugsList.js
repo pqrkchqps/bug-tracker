@@ -205,7 +205,7 @@ class BugsList extends Component {
       case 'created_by_id':
       case 'time_estimate':
       case 'hours_worked':
-      case 'percent':
+      case 'percent_complete':
         return (a, b) => {
           return a[sortColumn] - b[sortColumn];
         };
@@ -241,8 +241,7 @@ class BugsList extends Component {
     console.log("selectedRows:", this.state.selectedRows.values());
 
     const sortColumns = this.state.sortColumns;
-    let sortedBugs = (sortColumns.length === 0) ? bugs : [...bugs];
-    sortedBugs = sortedBugs.sort((a, b) => {
+    const sortedBugs = bugs.sort((a, b) => {
       for (const sort of sortColumns) {
         const comparator = this.getComparator(sort.columnKey);
         const compResult = comparator(a, b);
@@ -470,7 +469,6 @@ class BugsList extends Component {
           rowKeyGetter={this.rowKeyGetter}
           selectedRows={this.state.selectedRows}
           onSelectedRowsChange={rows => {
-            console.log("eee", rows); 
             this.setState({selectedRows: rows})
           }}
           sortColumns={this.state.sortColumns}
