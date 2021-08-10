@@ -1,14 +1,18 @@
 import React, {Component, Fragment} from 'react'
-import { Col, Row, Container, Form, Button, Progress, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Col, Row, Container, Button, Progress, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Link} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux'
 import {getBugs, editBug, deleteBug} from '../actions/bugActions'
 import {getProjectUsers} from '../actions/projectUsersActions'
 import ReactDataGrid, {SelectColumn} from "react-data-grid";
-import { DateTimePicker } from "@material-ui/pickers";
-import {brightWhite} from '../styles/colors.scss';
-
+import BugStatus from './bug/Status';
+import BugAssignedTo from './bug/AssignedTo';
+import BugDeadline from './bug/Deadline';
+import BugSeverity from './bug/Severity';
+import BugVersionIn from './bug/VersionIn';
+import BugHoursWorked from './bug/HoursWorked';
+import BugTimeEstimate from './bug/TimeEstimate';
 
 class BugsList extends Component {
   constructor(props){
@@ -361,125 +365,67 @@ class BugsList extends Component {
             <Row style={{width:"500px"}}>
               {this.state.isDeadlinePopupOpen &&
                 <Col>
-                  <DateTimePicker
-                    onChange={this.onDeadlineSelect}  
-                    name="deadline"
-                    id="deadline"
-                  />
+                  <BugDeadline onChangeHandler={this.onDeadlineSelect} defaultToNow={true}/>
                 </Col>
               }
               {this.state.isSeverityPopupOpen &&
                 <Col>
-                  <select className="bug-info-input"
-                    onChange={this.onGenericSelectValueForRows}  
-                    name="severity"
-                    id="severity"
-                  >
-                    <option value="---">---</option>
-                    <option value="None">None</option>
-                    <option value="Minor">Minor</option>
-                    <option value="Major">Major</option>
-                    <option value="Critical">Critical</option>
-                    <option value="Explosive">Explosive</option>
-                  </select>
+                  <BugSeverity onChangeHandler={this.onGenericSelectValueForRows} />
                 </Col>
               }
               {this.state.isStatusPopupOpen &&
                 <Col>
-                  <select className="form-input" 
-                    onChange={this.onGenericSelectValueForRows}  
-                    name="status"
-                    id="status"
-                  >
-                    <option value="---">---</option>
-                    <option value="Open">Open</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Closed">Closed</option>
-                  </select>
+                  <BugStatus onChangeHandler={this.onGenericSelectValueForRows} />
                 </Col>
               }
               {this.state.isAssignedToPopupOpen &&
                 <Col>
-                  <select className="bug-info-input" 
-                    onChange={this.onGenericSelectValueForRows}  
-                    name="assigned_to"
-                    id="assigned_to"
-                  >
-                    <option key={-99} value="---">---</option>
-                    <option key={-1} value="None">None</option>
-                    {projectUserNames.map((name, index) => <option key={index} value={name}>{name}</option>)}
-                  </select>
+                  <BugAssignedTo onChangeHandler={this.onGenericSelectValueForRows} projectUserNames={projectUserNames} />
                 </Col>
               }
               {this.state.isVersionPopupOpen &&
                 <Col>
-                  <Form onSubmit={this.onGenericSubmit} >
-                    <input className="bug-info-input" style={{backgroundColor: brightWhite}}
-                      type="text" 
-                      name="version"
-                      id="version"
-                    />
-                    <Button type="submit">Submit</Button>
-                  </Form>
+                  <BugVersionIn onSubmit={this.onGenericSubmit} />
                 </Col>
               }
               {this.state.isTimeEstimatePopupOpen &&
                 <Col>
-                  <Form onSubmit={this.onGenericSubmit} >
-                  <input className="bug-info-input" 
-                    type="number"
-                    min="0"
-                    step="any"
-                    name="time_estimate"
-                    id="time_estimate"
-                  />
-                    <Button type="submit">Submit</Button>
-                  </Form>
+                  <BugTimeEstimate onSubmit={this.onGenericSubmit} />
                 </Col>
               }
               {this.state.isHoursWorkedPopupOpen &&
                 <Col>
-                  <Form onSubmit={this.onGenericSubmit} >
-                    <input className="bug-info-input" 
-                      onChange={this.onChangeHandler} 
-                      type="number"
-                      min="0"
-                      step="any" 
-                      name="hours_worked"
-                      id="hours_worked"
-                    />
-                    <Button type="submit">Submit</Button>
-                  </Form>
+                  <BugHoursWorked onSubmit={this.onGenericSubmit} />
                 </Col>
               }
             </Row>
           </div> 
           ) : <div></div>}
           <ReactDataGrid
-          rows={sortedBugs}
-          columns={columns}
-          rowHeight={50}
-          style={{height: (bugs.length+1)*50+20}}
-          headerRowHeight={50}
-          enableCellAutoFocus={false}
-          defaultColumnOptions={{
-            sortable: true,
-            resizable: true
-          }}
-          rowKeyGetter={this.rowKeyGetter}
-          selectedRows={this.state.selectedRows}
-          onSelectedRowsChange={rows => {
-            this.setState({selectedRows: rows})
-          }}
-          sortColumns={this.state.sortColumns}
-          onSortColumnsChange={sortColumns => {
-            if (sortColumns.length === 0) {
-              this.setState({sortColumns: [...sortColumns]})
-            } else {
-              const newSort = this.state.sortColumns.filter((sortCol) => sortCol.columnKey !== sortColumns[0].columnKey);
-              this.setState({sortColumns: [...newSort, ...sortColumns]})
-            }
-          }}
+            rows={sortedBugs}
+            columns={columns}
+            rowHeight={50}
+            style={{height: (bugs.length+1)*50+20}}
+            headerRowHeight={50}
+            enableCellAutoFocus={false}
+            defaultColumnOptions={{
+              sortable: true,
+              resizable: true
+            }}
+            rowKeyGetter={this.rowKeyGetter}
+            selectedRows={this.state.selectedRows}
+            onSelectedRowsChange={rows => {
+              this.setState({selectedRows: rows})
+            }}
+            sortColumns={this.state.sortColumns}
+            onSortColumnsChange={sortColumns => {
+              if (sortColumns.length === 0) {
+                this.setState({sortColumns: [...sortColumns]})
+              } else {
+                const newSort = this.state.sortColumns.filter((sortCol) => sortCol.columnKey !== sortColumns[0].columnKey);
+                this.setState({sortColumns: [...newSort, ...sortColumns]})
+              }
+            }}
           />
         </TransitionGroup>
       </Container>

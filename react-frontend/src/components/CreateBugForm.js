@@ -7,8 +7,16 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { FiArrowDownCircle, FiArrowUpCircle } from 'react-icons/fi';
 import TextareaAutosize from 'react-textarea-autosize';
 import {Collapse} from 'react-collapse';
-import { DateTimePicker } from "@material-ui/pickers";
 import { Progress, Alert } from 'reactstrap';
+import BugStatus from './bug/Status';
+import BugTitle from './bug/Title';
+import BugAssignedTo from './bug/AssignedTo';
+import BugDeadline from './bug/Deadline';
+import BugSeverity from './bug/Severity';
+import BugVersionIn from './bug/VersionIn';
+import BugHoursWorked from './bug/HoursWorked';
+import BugTimeEstimate from './bug/TimeEstimate';
+
 
 
 class CreateBugForm extends React.Component {
@@ -137,13 +145,7 @@ class CreateBugForm extends React.Component {
         <div className="detail-title-sticky">
           <Alert color={this.state.alertColor} isOpen={this.state.Alertvisible} toggle={(e) => this.setState({Alertvisible: false})}> {this.state.message} </Alert>
           <div className="title-top-container">
-            <textarea 
-                onChange={this.onChangeHandler} 
-                type="text" 
-                name="bug_name"
-                id="bug_name"
-                value={this.state.bug.bug_name}
-            />
+            <BugTitle value={this.state.bug.bug_name} onChangeHandler={this.onChangeHandler} />
             <div className="title-top-buttons">
               <Link onClick={this.onCloseHandler}>
                 <AiFillCloseCircle className="title-top-button" size="50px" />
@@ -156,22 +158,14 @@ class CreateBugForm extends React.Component {
         </div>
         <div className="form-box">
           <label className="form-label">Status</label>
-          <select className="form-input" 
-            onChange={this.onChangeHandler}  
-            name="status"
-            id="status"
-            value={this.state.bug.status}
-          >
-            <option value="---">---</option>
-            <option value="Open">Open</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Closed">Closed</option>
-          </select>
+          <BugStatus value={this.state.bug.status} onChangeHandler={this.onChangeHandler} />
         </div>
         <div className="form-box">
           <div className="flex-row">
-            {!this.state.showDescription ? <FiArrowDownCircle className="hide-show-button bright-button" onClick={this.toggleDescription}/> : null}
-            {this.state.showDescription ? <FiArrowUpCircle className="hide-show-button bright-button" onClick={this.toggleDescription}/> : null}
+            {!this.state.showDescription ? 
+              <FiArrowDownCircle className="hide-show-button bright-button" onClick={this.toggleDescription}/> 
+              : <FiArrowUpCircle className="hide-show-button bright-button" onClick={this.toggleDescription}/>
+            }
             <label className="form-label-header">Description</label>
           </div>
           <Collapse isOpened={this.state.showDescription}>
@@ -187,95 +181,36 @@ class CreateBugForm extends React.Component {
           <label className="form-label-header">Bug Information</label>
           <div className="flex-row bug-info-container">
             <label className="bug-info-label">Assigned To</label>
-            <select className="bug-info-input" 
-              onChange={this.onChangeHandler}  
-              name="assigned_to"
-              id="assigned_to"
-              value={this.state.bug.assigned_to}
-            >
-              <option key={-99} value="---">---</option>
-              <option key={-1} value="None">None</option>
-              {projectUserNames.map((name, index) => <option key={index} value={name}>{name}</option>)}
-            </select>
+            <BugAssignedTo value={this.state.bug.assigned_to} onChangeHandler={this.onChangeHandler} projectUserNames={projectUserNames} />
           </div>
           <div className="flex-row">
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Deadline</label>
-              <div className="bug-info-input">
-                <DateTimePicker
-                  onChange={this.onChangeHandlerDeadline}  
-                  name="deadline"
-                  id="deadline"
-                  value={this.state.bug.deadline ? this.state.bug.deadline : null }
-                />
-              </div>
+              <BugDeadline value={this.state.bug.deadline} onChangeHandler={this.onChangeHandlerDeadline} />
             </div>
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Status</label>
-              <select className="bug-info-input" 
-                onChange={this.onChangeHandler}  
-                name="status"
-                id="status"
-                value={this.state.bug.status}
-              >
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Closed">Closed</option>
-              </select>
+              <BugStatus value={this.state.bug.status} onChangeHandler={this.onChangeHandler} />
             </div>
           </div>
           <div className="flex-row">
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Severity</label>
-              <select className="bug-info-input"
-                onChange={this.onChangeHandler}  
-                name="severity"
-                id="severity"
-                value={this.state.bug.severity}
-              >
-                <option key={-99} value="---">---</option>
-                <option value="None">None</option>
-                <option value="Minor">Minor</option>
-                <option value="Major">Major</option>
-                <option value="Critical">Critical</option>
-                <option value="Explosive">Explosive</option>
-              </select>
+              <BugSeverity value={this.state.bug.severity} onChangeHandler={this.onChangeHandler} />
             </div>
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Version (in)</label>
-              <input className="bug-info-input" 
-                onChange={this.onChangeHandler} 
-                type="text" 
-                name="version"
-                id="version"
-                value={this.state.bug.version}
-              />
+              <BugVersionIn value={this.state.bug.version} onChangeHandler={this.onChangeHandler} />
             </div>
           </div>
           <div className="flex-row">
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Time Estimate</label>
-              <input className="bug-info-input" 
-                onChange={this.onChangeHandler} 
-                type="number"
-                min="0"
-                step="any"
-                name="time_estimate"
-                id="time_estimate"
-                value={this.state.bug.time_estimate}
-              />
+              <BugTimeEstimate value={this.state.bug.time_estimate} onChangeHandler={this.onChangeHandler} />
             </div>
             <div className="flex-row bug-info-container">
               <label className="bug-info-label">Hours Worked</label>
-              <input className="bug-info-input" 
-                onChange={this.onChangeHandler} 
-                type="number"
-                min="0"
-                step="any" 
-                name="hours_worked"
-                id="hours_worked"
-                value={this.state.bug.hours_worked}
-              />
+              <BugHoursWorked value={this.state.bug.hours_worked} onChangeHandler={this.onChangeHandler} />
             </div>
           </div>
         </div>
