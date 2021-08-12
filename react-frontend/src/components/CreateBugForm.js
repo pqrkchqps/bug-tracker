@@ -143,7 +143,7 @@ class CreateBugForm extends React.Component {
     return (
       <form id="create-bug-form" >
         <div className="detail-title-sticky">
-          <Alert color={this.state.alertColor} isOpen={this.state.Alertvisible} toggle={(e) => this.setState({Alertvisible: false})}> {this.state.message} </Alert>
+          <Alert color={this.state.alertColor} className={this.state.Alertvisible ? "visible" : "invisible"} toggle={(e) => this.setState({Alertvisible: false})}> {this.state.message} </Alert>
           <div className="title-top-container">
             <BugTitle value={this.state.bug.bug_name} onChangeHandler={this.onChangeHandler} />
             <div className="title-top-buttons">
