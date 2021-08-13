@@ -13,6 +13,7 @@ import BugSeverity from './bug/Severity';
 import BugVersionIn from './bug/VersionIn';
 import BugHoursWorked from './bug/HoursWorked';
 import BugTimeEstimate from './bug/TimeEstimate';
+import "../library"
 
 class BugsList extends Component {
   constructor(props){
@@ -20,6 +21,7 @@ class BugsList extends Component {
     this.state = {
       selectedRows:  new Set(),
       sortColumns: [],
+      view: "All", 
       isDeadlinePopupOpen: false,
       isSeverityPopupOpen: false,
       isAssignedToPopupOpen: false,
@@ -121,7 +123,6 @@ class BugsList extends Component {
   onSelectViewDropdown = (e) => {
     e.preventDefault()
     const name = e.target.name
-    console.log("eee", name)
     this.setState({view: name, isViewsDropdownOpen: false})
     this.resetSelectedRows()
   }
@@ -229,17 +230,36 @@ class BugsList extends Component {
       bugs = [];
     }
     else { 
+      const now = new Date();
       switch (this.state.view){
         case "All Open":
           bugs = bugs.filter(bug => bug.status === "Open")
           break;
-        case "All Closed":
-          bugs = bugs.filter(bug => bug.status === "Closed")
+        case "All Closed or Fixed":
+          bugs = bugs.filter(bug => bug.status === "Fixed" || bug.status === "Closed")
+          break;
+        case "My Open":
+          bugs = bugs.filter(bug => bug.status === "Open" && bug.created_by_id === userId)
+          break;
+        case "My Closed or Fixed":
+          bugs = bugs.filter(bug => (bug.status === "Closed" || bug.status === "Fixed") && bug.created_by_id === userId)
+          break;
+        case "Overdue and Open":
+          bugs = bugs.filter(bug => bug.deadline && bug.deadline.localeCompare(now.yyyymmddt()) < 0 && (bug.status === "Open" || bug.status === "---"))
+          break;
+        case "Unassigned":
+          bugs = bugs.filter(bug => !bug.assigned_to || bug.assigned_to === "None" || bug.assigned_to === "---")
+          break;
+        case "Created Today":
+          const today = new Date(now.toDateString());
+          bugs = bugs.filter(bug => bug.created_on.localeCompare(today.yyyymmddt()) > 0)
+          break;
+        case "Created By Me":  
+          bugs = bugs.filter(bug => bug.created_by_id === userId)
           break;
       }
     }
 
-    
     console.log("currentProjectUser:",currentProjectUser)
     console.log("userId:", userId);
     console.log("selectedRows:", this.state.selectedRows.values());
@@ -306,14 +326,24 @@ class BugsList extends Component {
             <Col>
               <ButtonDropdown isOpen={this.state.isViewsDropdownOpen} toggle={this.onGenericToggle}>
                 <DropdownToggle name="isViewsDropdownOpen"  caret>
-                  Views
+                {this.state.view}
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem onClick={this.onSelectViewDropdown} name="All">All</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={this.onSelectViewDropdown} name="All Open">All Open</DropdownItem>
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="All Closed or Fixed">All Closed or Fixed</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={this.onSelectViewDropdown} name="All Closed">All Closed</DropdownItem>
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="My Open">My Open</DropdownItem>
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="My Closed or Fixed">My Closed or Fixed</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="Overdue and Open">Overdue and Open</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="Unassigned">Unassigned</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="Created Today">Created Today</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.onSelectViewDropdown} name="Created By Me">Created By Me</DropdownItem>
                 </DropdownMenu>
 
               </ButtonDropdown>
