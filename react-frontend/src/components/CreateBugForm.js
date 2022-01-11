@@ -29,7 +29,7 @@ class CreateBugForm extends React.Component {
         summary: '',
         severity: '',
         status: '',
-        created_by: '',
+        created_by_id: '',
         assigned_to: '',
         version: '',
         time_estimate: '',
@@ -129,7 +129,7 @@ class CreateBugForm extends React.Component {
     if (this.props.bugId !== "null" && !this.state.stateLoaded && bug){
       this.setState({bug: {...this.state.bug, ...bug}, stateLoaded: true});
     } else if (this.state.bug.id === "null" && this.state.isBugAdded && lastAddedBug !== null) {
-      this.setState({bug: {...this.state.bug, id: lastAddedBug.id, created_by: lastAddedBug.created_by}, stateLoaded: true, isBugAdded: false});
+      this.setState({bug: {...this.state.bug, id: lastAddedBug.id, created_by_id: lastAddedBug.created_by_id}, stateLoaded: true, isBugAdded: false});
     }
 
     const projectUsers = this.props.projectUsers;
@@ -153,7 +153,7 @@ class CreateBugForm extends React.Component {
             </div>
           </div>
           <div className="title-bottom">
-            <p className="created_by">{"By "+this.state.bug.created_by}</p>
+            <p className="created_by">{"By "+this.state.bug.name}</p>
           </div>
         </div>
         <div className="form-box">

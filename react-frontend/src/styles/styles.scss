@@ -5,6 +5,7 @@
 @import './components/Header';
 @import './components/ProjectList';
 @import './colors.scss';
+@import './pages/EditUserProfile.scss';
 
 a:hover, .bright-button:hover {
     color: map-get($theme-colors, bright-light);

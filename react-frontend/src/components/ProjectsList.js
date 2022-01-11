@@ -52,6 +52,9 @@ class ProjectsList extends Component {
                     {projectUserPermissions && (projectUserPermissions.add_users || projectUserPermissions.remove_users || projectUserPermissions.edit_users || projectUserPermissions.edit_own_users) ? (
                       <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
                     ) : null }
+                    {projectUserPermissions && projectUserPermissions.edit_project_page ? (
+                      <Link className="project-btn" to={"/projects_users/"+id}><Button>Edit Project Page</Button></Link>
+                    ) : null }
                     {projectUserPermissions && projectUserPermissions.delete_project ? (
                       <Button className="remove-btn" color="danger" size="sm"
                       onClick={this.onDeleteClick.bind(this, id)}>

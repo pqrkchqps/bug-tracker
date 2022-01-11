@@ -1,0 +1,23 @@
+.profile-form {
+    width: 800px;
+    margin: auto;
+}
+
+.profile-info-container{
+    width: 500px;
+    margin: auto;
+    padding-top: 20px;
+}
+
+.profile-info-label{
+    padding-right: 20px;
+}
+
+.bottom-profile-info-container{
+    margin-bottom: 20px;
+}
+.profile-info-container:hover, .profile-info-container:focus{
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-color: map-get($theme-colors, bright-light);
+  }

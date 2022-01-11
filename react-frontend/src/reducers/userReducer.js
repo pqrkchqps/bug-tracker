@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, USERS_LOADING} from '../actions/types'
+import { GET_ALL_USERS, USERS_LOADING, UPDATE_USER_INFO} from '../actions/types'
 
  const initialState = {
    users: [],
@@ -19,6 +19,11 @@ export default function (state = initialState, action) {
         ...state,
         loading: true
       }
+    case UPDATE_USER_INFO:
+      return ({
+        ...state,
+        users: [ ...state.users.map(user => user.id === action.payload.id ? action.payload : user)]
+      })
     default:
       return state;
   }

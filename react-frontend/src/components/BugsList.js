@@ -305,6 +305,7 @@ class BugsList extends Component {
       { key: "deadline", name: "Deadline", width: 200},
       { key: "severity", name: "Severity", width: 100},
       { key: "assigned_to", name: "Assigned To", width: 100},
+      { key: "name", name: "Created By", width: 100},
       { key: "status", name: "Status", width: 100},
       { key: "version", name: "Version (In)", width: 100},
       { key: "time_estimate", name: "Time Estimate", width: 50},

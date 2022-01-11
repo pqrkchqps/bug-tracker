@@ -4,8 +4,12 @@ const auth = require('../../middleware/auth')
 const db = require('../../db/db')
 
 router.get('/:projectId', (req, res) => {
-  db.any('SELECT * from bugs_'+req.params.projectId)
+  db.any('SELECT * from bugs_'+req.params.projectId+' b JOIN users u ON u.id = b.created_by_id')
   .then(bugs => {
+    bugs = bugs.map(bug => {
+      delete bug.password;
+      return bug;
+    })
     console.log(bugs)
     res.json(bugs);
   })
@@ -24,7 +28,6 @@ router.post('/:projectId', auth, (req, res) => {
     let values = [
       bug.assigned_to,
       bug.bug_name,
-      user.name,
       user.id,
       bug.deadline,
       bug.hours_worked,
@@ -35,7 +38,7 @@ router.post('/:projectId', auth, (req, res) => {
       bug.time_estimate,
       bug.version,
     ];
-    var insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by, created_by_id, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
+    var insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by_id, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
       +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp) RETURNING *;'
   
     db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])

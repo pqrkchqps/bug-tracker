@@ -35,6 +35,9 @@ class Header extends Component {
           </span>
         </NavItem>
         <NavItem>
+          <Button><Link to="/profile">Your User Info</Link></Button>
+        </NavItem>
+        <NavItem>
           <Button><Link to="/projects">Your Projects</Link></Button>
         </NavItem>
         <NavItem>

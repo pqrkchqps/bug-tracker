@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
@@ -9,6 +9,7 @@ import AddBug from '../pages/AddBug';
 import ProjectTracker from '../pages/ProjectTracker';
 import ManageUsers from '../pages/ManageUsers';
 import {connect} from 'react-redux';
+import EditUserProfile from '../pages/EditUserProfile';
 
 class RedirectRouter extends Component {
   render(){
@@ -24,6 +25,7 @@ class RedirectRouter extends Component {
             {isAuthenticated?<Route exact path="/projects_users/:projectId" component={ManageUsers} />:<Route path="/projects_users/:projectId" component={Login} />}
             {isAuthenticated?<Route path="/login" component={Home} />:<Route path="/login" component={Login} />}
             {isAuthenticated?<Route path="/signup" component={Home} />:<Route path="/signup" component={Signup} />}
+            {isAuthenticated?<Route path="/profile" component={EditUserProfile} />:<Route path="/profile" component={Login} />}
             <Route path="/" component={Home} />
           </Switch>
         </div>

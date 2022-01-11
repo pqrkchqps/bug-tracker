@@ -4,7 +4,6 @@ import { Card, Logo, Form, Input, Button } from '../components/AuthForms';
 import { UncontrolledAlert } from 'reactstrap';
 import Header from '../components/Header'
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { login } from '../actions/authActions'
 import { clearErrors } from '../actions/errorActions'
 
@@ -18,15 +17,8 @@ class Login extends Component {
     msg: null
   }
 
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
-  }
-
   componentDidUpdate(prevProps){
-    const { error, isAuthenticated } = this.props;
+    const { error } = this.props;
     if(error !== prevProps.error){
       this.setState({msg: error.msg})
     }
@@ -50,12 +42,6 @@ class Login extends Component {
   }
 
   render () {
-    const { isAuthenticated } = this.props;
-
-    if (isAuthenticated) {
-      //return <Redirect to="/" />
-    }
-
     return (
       <div>
         <Header />

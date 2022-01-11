@@ -58,11 +58,40 @@ router.post('/', auth, (req, res) => {
     ).catch(error => {
       console.log(error);
     })
-    db.none('CREATE TABLE IF NOT EXISTS bugs_$1 (id SERIAL PRIMARY KEY,  assigned_to VARCHAR(100), bug_name VARCHAR(100),  created_by VARCHAR(100), created_by_id SERIAL REFERENCES users (id), deadline VARCHAR(100),  hours_worked VARCHAR(100),  percent_complete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  time_estimate VARCHAR(100),  version VARCHAR(100), created_on DATE NOT NULL);', newProject.id);
+    db.none('CREATE TABLE IF NOT EXISTS bugs_$1 (id SERIAL PRIMARY KEY,  assigned_to VARCHAR(100), bug_name VARCHAR(100),  created_by_id SERIAL REFERENCES users (id), deadline VARCHAR(100),  hours_worked VARCHAR(100),  percent_complete VARCHAR(100),  severity VARCHAR(100),  status VARCHAR(100),  summary VARCHAR(100),  time_estimate VARCHAR(100),  version VARCHAR(100), created_on DATE NOT NULL);', newProject.id);
     res.json(newProject);
   })
   .catch(error => {
     console.log(error);
+  })
+});
+
+router.patch('/:id', auth, (req, res) => {
+  db.one('SELECT * FROM projects_users WHERE user_id = $1 AND project_id = $2 AND edit_project_page IS TRUE', [req.user.id, req.params.id])
+  .then(userPermissions => {
+    const project = req.body;
+    console.log(project, req.user.id)
+    const values = [
+      project.name,
+      project.image_name,
+      project.version,
+      req.params.id
+    ];
+    db.one(
+      'UPDATE projects SET name = $1, image_name = $2, version = $3 WHERE id = $4 RETURNING *;',
+      values
+    ).then(updatedProject => {
+      console.log(updatedProject)
+      res.json(updatedProject);
+    })
+    .catch(error => {
+      console.log(error);
+      return res.status(500).json({msg: "Error in updating record in database"})
+    })
+  })
+  .catch(error => {
+    console.log(error);
+    return res.status(401).json({msg: "Not Authorized to update project"})
   })
 });
 

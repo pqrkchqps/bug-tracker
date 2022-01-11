@@ -6,7 +6,8 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  UPDATE_USER_INFO
 } from "../actions/types"
 
 const initialState = {
@@ -24,6 +25,7 @@ export default function (state=initialState, action){
         isLoading: true
       }
     case USER_LOADED:
+    case UPDATE_USER_INFO:
       return {
         ...state,
         isAuthenticated: true,

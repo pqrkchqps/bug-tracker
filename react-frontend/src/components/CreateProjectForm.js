@@ -14,6 +14,14 @@ class CreateProjectForm extends React.Component {
       redirect: false,
     }
   }
+
+  componentDidMount() {
+    if (this.props.bugId !== "null") {
+      this.props.getProjects(this.props.projectId);
+    }
+    this.props.getProjectUsers(this.props.projectId);
+  }
+
   projectNameChangeHandler = (e) => {
     this.setState({name: e.target.value});
   }
