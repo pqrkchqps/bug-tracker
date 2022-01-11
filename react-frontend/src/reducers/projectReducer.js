@@ -1,4 +1,4 @@
-import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from '../actions/types'
+import { GET_PROJECT, GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING} from '../actions/types'
 
  const initialState = {
    projects: [],
@@ -10,6 +10,13 @@ import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJE
 export default function (state = initialState, action) {
   console.log(action)
   switch (action.type){
+    case GET_PROJECT:
+      return ({
+        ...state,
+        projects: action.payload,
+        userPermissions: [],
+        loading: false
+      })
     case GET_ALL_PROJECTS:
       return ({
         ...state,

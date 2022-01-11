@@ -23,6 +23,7 @@ class AddProject extends Component {
   }
 
   render() {
+    const projectId = this.props.match.params.projectId;
     return (
       <div>
         <Header />
@@ -33,7 +34,7 @@ class AddProject extends Component {
             </Link>
           </Button>
         </Container>
-        <CreateProjectForm />
+        <CreateProjectForm projectId={projectId} />
       </div>
     );
   }

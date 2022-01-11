@@ -28,6 +28,17 @@ router.get('/for_user', auth, (req, res) => {
   })
 })
 
+router.get('/:id', (req, res) => {
+  db.one('SELECT * FROM projects WHERE id = $1', req.params.id)
+  .then(project => {
+    console.log(project)
+    res.json([project]);
+  })
+  .catch(error => {
+    console.log(error);
+  })
+})
+
 router.get('/', (req, res) => {
   db.any('SELECT * FROM projects')
   .then(projects => {

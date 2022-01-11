@@ -1,7 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {addProject} from '../actions/projectActions'
+import {addProject, getProject} from '../actions/projectActions'
+import {getProjectUsers} from '../actions/projectUsersActions'
 import { Redirect } from 'react-router-dom';
 
 class CreateProjectForm extends React.Component {
@@ -16,8 +17,8 @@ class CreateProjectForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.bugId !== "null") {
-      this.props.getProjects(this.props.projectId);
+    if (this.props.projectId !== "null") {
+      this.props.getProject(this.props.projectId);
     }
     this.props.getProjectUsers(this.props.projectId);
   }
@@ -62,6 +63,8 @@ class CreateProjectForm extends React.Component {
   Time Tracking: original estimate, current est, hours worked, % complete, deadline
   */
   render(){
+    console.log(this.props.project)
+    const project = this.props.project.projects[0]
     if (this.state.redirect){
       return <Redirect to="/projects" />
     }
@@ -70,7 +73,7 @@ class CreateProjectForm extends React.Component {
         <h3 className="title">Create A New Project</h3>
         <div className="form-box">
           <label className="form-label">Project Name</label>
-          <input className="form-input" onChange={this.projectNameChangeHandler} type="text" />
+          <input className="form-input" onChange={this.projectNameChangeHandler} value={project && project.name} type="text" />
         </div>
         <input type="file" name="file" />
         <div className="form-box">
@@ -91,4 +94,4 @@ const mapStateToProps = state => ({
   project: state.project
 })
 
-export default connect(mapStateToProps, {addProject})(CreateProjectForm);
+export default connect(mapStateToProps, {addProject, getProject, getProjectUsers})(CreateProjectForm);
