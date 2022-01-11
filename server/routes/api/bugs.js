@@ -4,7 +4,7 @@ const auth = require('../../middleware/auth')
 const db = require('../../db/db')
 
 router.get('/:projectId', (req, res) => {
-  db.any('SELECT * from bugs_'+req.params.projectId+' b JOIN users u ON u.id = b.created_by_id')
+  db.any('SELECT *, b.id as id  from bugs_'+req.params.projectId+' b JOIN users u ON b.created_by_id = u.id')
   .then(bugs => {
     bugs = bugs.map(bug => {
       delete bug.password;
