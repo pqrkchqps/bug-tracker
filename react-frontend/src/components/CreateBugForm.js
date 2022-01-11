@@ -134,7 +134,7 @@ class CreateBugForm extends React.Component {
 
     const projectUsers = this.props.projectUsers;
     const projectUserNames = projectUsers.map(user => user.name);
-    console.log(projectUserNames)
+    //console.log(projectUserNames)
 
     if (this.state.shouldRedirect){
       return <Redirect to={"/projects/"+this.props.projectId} ></Redirect>

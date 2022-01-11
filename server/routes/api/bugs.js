@@ -39,7 +39,7 @@ router.post('/:projectId', auth, (req, res) => {
       bug.version,
     ];
     var insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, created_by_id, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, created_on) '
-      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp) RETURNING *;'
+      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) RETURNING *;'
   
     db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])
     .then(current_project_user => {
@@ -77,7 +77,6 @@ router.patch('/:projectId', auth, (req, res) => {
   let values = [
     bug.assigned_to,
     bug.bug_name,
-    bug.created_by,
     bug.deadline,
     bug.hours_worked,
     Math.round(bug.hours_worked / bug.time_estimate * 100) || null,
@@ -89,9 +88,9 @@ router.patch('/:projectId', auth, (req, res) => {
     bug.id
   ];
   var insertString = 'INSERT INTO bugs_'+req.params.projectId+' (assigned_to, bug_name, deadline, hours_worked, percent_complete, severity, status, summary, time_estimate, version, id, created_on) '
-      +'VALUES ($1, $2, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp) '
+      +'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, current_timestamp) '
       +'ON CONFLICT (id) DO UPDATE '
-      +'SET assigned_to = $1, bug_name = $2, deadline = $4, hours_worked = $5, percent_complete = $6, severity = $7, status = $8, summary = $9, time_estimate = $10, version = $11 RETURNING *;'
+      +'SET assigned_to = $1, bug_name = $2, deadline = $3, hours_worked = $4, percent_complete = $5, severity = $6, status = $7, summary = $8, time_estimate = $9, version = $10 RETURNING *;'
 
   db.one('SELECT * from projects_users WHERE project_id = $1 AND user_id = $2', [req.params.projectId, req.user.id])
   .then(current_project_user => {
