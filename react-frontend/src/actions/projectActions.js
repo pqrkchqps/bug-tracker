@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, DELETE_PROJECT, PROJECTS_LOADING, GET_PROJECT} from './types'
+import { GET_ALL_PROJECTS, GET_USER_PROJECTS, ADD_PROJECT, EDIT_PROJECT, DELETE_PROJECT, PROJECTS_LOADING, GET_PROJECT} from './types'
 import {tokenConfig} from './authActions'
 import {returnErrors} from './errorActions'
 
@@ -67,8 +67,22 @@ export const addProject = (project) => (dispatch, getState) => {
   })
 }
 
+export const editProject = (project, id) => (dispatch, getState) => {
+  axios.patch('/api/projects/'+id, project, tokenConfig(getState))
+  .then(res => {
+    console.log(res)
+    dispatch({
+      type: EDIT_PROJECT,
+      payload: res.data
+    })
+  }).catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  })
+}
+
 export const setProjectsLoading = () => {
   return {
     type: PROJECTS_LOADING
   }
 }
+

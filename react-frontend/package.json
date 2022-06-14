@@ -14,7 +14,6 @@
     "cloudinary-react": "^1.6.8",
     "date-fns": "^2.22.1",
     "material-ui": "^0.20.2",
-    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-collapse": "^5.1.0",
     "react-data-grid": "^7.0.0-canary.49",
@@ -30,6 +29,7 @@
     "reactstrap": "^8.7.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sass": "^1.52.3",
     "styled-components": "^5.2.1"
   },
   "scripts": {

@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         lastAddedBug: action.payload.bug,
-        ["bugs_"+action.payload.projectId]: [action.payload.bug, ...state.["bugs_"+action.payload.projectId]]
+        ["bugs_"+action.payload.projectId]: [action.payload.bug, ...state["bugs_"+action.payload.projectId]]
       }
     case BUGS_LOADING:
       return {

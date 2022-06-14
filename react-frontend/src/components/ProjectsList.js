@@ -31,7 +31,6 @@ class ProjectsList extends Component {
   render() {
     const {projects, userPermissions} = this.props.project;
     const {isAuthenticated} = this.props;
-    console.log("eee",userPermissions)
 
     return (
       <Container>
@@ -44,7 +43,7 @@ class ProjectsList extends Component {
               <ListGroupItem key={id} className="project-block">
                 <h1 className="project-name">{name}</h1>
                 <div className="project-image-holder">
-                <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
+                  <Image className="project-image" cloudName="hqds0bho9" publicId={image_name} width="300" height="200" crop="limit"/>
                 </div>
                 <Link className="project-btn" to={"/projects/"+id}><Button>Project Tracker</Button></Link>
                 { isAuthenticated && !this.props.home ? (
@@ -53,7 +52,7 @@ class ProjectsList extends Component {
                       <Link className="project-btn" to={"/projects_users/"+id}><Button>Manage Users</Button></Link>
                     ) : null }
                     {projectUserPermissions && projectUserPermissions.edit_project_page ? (
-                      <Link className="project-btn" to={"/projects_users/"+id}><Button>Edit Project Page</Button></Link>
+                      <Link className="project-btn" to={"/projects/add/"+id}><Button>Edit Project Page</Button></Link>
                     ) : null }
                     {projectUserPermissions && projectUserPermissions.delete_project ? (
                       <Button className="remove-btn" color="danger" size="sm"
