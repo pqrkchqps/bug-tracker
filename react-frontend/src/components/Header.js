@@ -55,14 +55,14 @@ class Header extends Component {
     )
 
     return (
-        <Navbar color="dark" dark expand="sm" className="mb-3">
-            <Container>
-            <NavbarBrand href="/">Dreamer Assist</NavbarBrand>
-            <Nav className="ml-auto" navbar>
-                {isAuthenticated ? authLinks : guestLinks}
-            </Nav>
-            </Container>
-        </Navbar>
+      <Navbar color="dark" dark expand="sm" className="mb-3">
+        <Container>
+          <NavbarBrand href="/">Project Tracker</NavbarBrand>
+          <Nav className="ml-auto" navbar>
+            {isAuthenticated ? authLinks : guestLinks}
+          </Nav>
+        </Container>
+      </Navbar>
     );
   }
 }
